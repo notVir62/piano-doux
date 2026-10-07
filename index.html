@@ -3,511 +3,313 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#171923">
-<title>Piano Doux</title>
+<meta name="theme-color" content="#191433">
+<title>Piano Doux — Direct</title>
 <style>
-:root{--bg:#f4f5f8;--panel:#fff;--text:#202331;--muted:#727789;--accent:#6658d3;--accent2:#e9e6ff;--right:#8a63e8;--left:#32a8a0;--good:#42a66c;--border:#dedfe7;--white:#fff;--black:#252735;--shadow:0 5px 20px rgba(0,0,0,.08)}
-body.dark{--bg:#101118;--panel:#191b25;--text:#f4f4f7;--muted:#a6a9b7;--accent:#9b8cff;--accent2:#302b55;--border:#353746;--white:#f4f4f4;--black:#090a0e;--shadow:0 5px 20px rgba(0,0,0,.28)}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
-body{padding-bottom:90px;-webkit-tap-highlight-color:transparent}button,input,select,textarea{font:inherit}button{border:0;cursor:pointer}.app{width:min(100%,900px);margin:auto}
-header{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:var(--bg);border-bottom:1px solid var(--border)}
-.brand{display:flex;flex-direction:column}.brand strong{font-size:20px}.brand small,.muted{color:var(--muted)}.header-actions{display:flex;gap:8px}
-.icon-btn{min-width:44px;height:44px;border-radius:14px;background:var(--panel);color:var(--text);box-shadow:var(--shadow);font-size:19px}main{padding:14px}.screen{display:none}.screen.active{display:block}
-.card{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}
-h1,h2,h3,p{margin-top:0}h1{font-size:26px;line-height:1.1;margin-bottom:8px}h2{font-size:21px}.big-btn{width:100%;min-height:54px;padding:12px 16px;border-radius:16px;background:var(--accent);color:#fff;font-weight:800;font-size:17px}.secondary{background:var(--accent2);color:var(--text)}.danger{background:#ffe2e2;color:#8b2525}
-.row{display:flex;gap:10px;align-items:center}.wrap{flex-wrap:wrap}.grow{flex:1}.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{text-align:center;padding:14px 5px;background:var(--bg);border-radius:16px}.stat strong{display:block;font-size:24px}
-.progress{height:12px;overflow:hidden;border-radius:999px;background:var(--border)}.progress>div{height:100%;width:0;background:var(--accent);border-radius:999px;transition:width .2s}
-.song-list{display:grid;gap:10px}.song{width:100%;text-align:left;padding:14px;border-radius:17px;border:1px solid var(--border);background:var(--panel);color:var(--text)}.song.selected{outline:3px solid var(--accent)}.song-title{display:flex;justify-content:space-between;gap:10px;font-weight:800}.song-meta{margin-top:5px;color:var(--muted);font-size:14px}.stars{white-space:nowrap;color:#d49300}
-.levels{display:grid;gap:9px}.level{width:100%;padding:13px;border-radius:15px;text-align:left;background:var(--bg);color:var(--text);border:2px solid transparent}.level.active{border-color:var(--accent)}.level.locked{opacity:.45}
-.practice-top{display:grid;gap:10px}.current-task{padding:14px;background:var(--accent2);border-radius:18px;text-align:center}.current-task .next{font-size:38px;font-weight:900;line-height:1;margin:8px 0}.hand-right{color:var(--right)}.hand-left{color:var(--left)}
-.sequence{display:flex;gap:8px;overflow-x:auto;padding:5px 2px 10px}.seq-note{min-width:52px;padding:9px 6px;border-radius:12px;background:var(--bg);text-align:center;border:2px solid transparent}.seq-note.active{border-color:var(--accent);transform:scale(1.05)}.seq-note.done{opacity:.38}.seq-note .finger{display:block;font-size:11px;color:var(--muted)}
-.chord-box{display:flex;justify-content:center;align-items:center;gap:10px;min-height:58px;border-radius:16px;background:var(--bg);font-weight:800}.keyboard-shell{overflow-x:auto;padding:8px 0 14px;touch-action:pan-x}.keyboard{position:relative;height:220px;margin:auto;user-select:none;-webkit-user-select:none}
-.white-key{position:absolute;top:0;height:220px;background:var(--white);border:1px solid #aeb1bb;border-radius:0 0 8px 8px;color:#1c1d22;display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px;z-index:1}.black-key{position:absolute;top:0;height:135px;background:var(--black);border-radius:0 0 7px 7px;color:#fff;z-index:4;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;box-shadow:0 4px 8px rgba(0,0,0,.25)}
-.key-label{text-align:center;font-weight:900;line-height:1.05;pointer-events:none}
-.eden-lh .key-label .num{color:var(--left)}
-.eden-rh .key-label .num{color:var(--right)}
-.dino-marker{position:absolute;left:50%;transform:translateX(-50%);bottom:58px;font-size:25px;line-height:1;pointer-events:none;filter:drop-shadow(0 1px 1px rgba(0,0,0,.15))}
-.dino-caption{position:absolute;left:50%;transform:translateX(-50%);bottom:42px;font-size:9px;font-weight:900;white-space:nowrap;pointer-events:none}
-.dino-red .dino-marker{filter:hue-rotate(325deg) saturate(2.2) drop-shadow(0 1px 1px rgba(0,0,0,.15))}
-.dino-darkblue .dino-marker{filter:hue-rotate(175deg) saturate(2.4) brightness(.7) drop-shadow(0 1px 1px rgba(0,0,0,.15))}
-.dino-lightblue .dino-marker{filter:hue-rotate(165deg) saturate(1.3) brightness(1.35) drop-shadow(0 1px 1px rgba(0,0,0,.15))}
-.key-label .num{display:block;font-size:22px}.key-label .note{display:block;font-size:11px;margin-top:4px}.white-key.right-lit,.black-key.right-lit{background:var(--right)!important;color:#fff!important}.white-key.left-lit,.black-key.left-lit{background:var(--left)!important;color:#fff!important}.white-key.mg-key{box-shadow:inset 0 -7px 0 var(--left)}.white-key.md-key{box-shadow:inset 0 -7px 0 var(--right)}.white-key.correct,.black-key.correct{background:var(--good)!important;color:#fff!important}
-.controls{display:grid;gap:10px}.segmented{display:flex;gap:5px;padding:5px;border-radius:15px;background:var(--bg)}.segmented button{flex:1;min-height:42px;border-radius:11px;background:transparent;color:var(--text);font-weight:700}.segmented button.active{background:var(--panel);box-shadow:0 2px 8px rgba(0,0,0,.08)}
-label{display:block;font-weight:700;margin-bottom:7px}input[type=range]{width:100%}input[type=text],input[type=number],textarea,select{width:100%;min-height:48px;padding:11px 12px;border-radius:13px;border:1px solid var(--border);background:var(--bg);color:var(--text)}textarea{min-height:85px;resize:vertical}.form-grid{display:grid;gap:12px}.mini{font-size:13px}.encouragement{text-align:center;min-height:26px;font-weight:800;color:var(--good)}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;justify-content:center;border-top:1px solid var(--border);background:var(--panel)}.bottom-nav-inner{width:min(100%,900px);display:grid;grid-template-columns:repeat(4,1fr)}.nav-btn{min-height:68px;background:transparent;color:var(--muted);font-size:12px;font-weight:700}.nav-btn span{display:block;font-size:21px;margin-bottom:2px}.nav-btn.active{color:var(--accent)}.badge{display:inline-block;padding:5px 9px;border-radius:999px;background:var(--accent2);font-size:12px;font-weight:800}
-@media(orientation:landscape){.app{width:min(100%,1200px)}.keyboard{height:180px}.white-key{height:180px}.black-key{height:110px}.practice-layout{display:grid;grid-template-columns:330px 1fr;gap:14px}}
-@media(max-width:430px){main{padding:10px}.card{padding:13px;border-radius:17px}h1{font-size:23px}}
-
-/* ===== MODE CASCADE ===== */
-.cascade-launch{margin-top:10px}
-#cascadeOverlay{position:fixed;inset:0;z-index:1000;background:var(--bg);display:none;flex-direction:column;overflow:hidden}
-#cascadeOverlay.active{display:flex}
-.cascade-bar{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--panel);border-bottom:1px solid var(--border);min-height:58px}
-.cascade-bar button{min-height:42px;border-radius:13px;padding:8px 12px;background:var(--accent2);color:var(--text);font-weight:800}
-.cascade-bar .pause-main{background:var(--accent);color:#fff;min-width:92px}
-.cascade-status{font-size:12px;font-weight:800;white-space:nowrap}
-.status-ok{color:var(--good)}.status-off{color:var(--muted)}
-.cascade-stage{position:relative;flex:1;min-height:260px;overflow:hidden;background:linear-gradient(to bottom,var(--bg),var(--panel))}
-#fallArea{position:absolute;left:0;top:0;bottom:0;will-change:transform}
-.fall-note{position:absolute;border-radius:8px 8px 4px 4px;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;overflow:hidden;border:2px solid rgba(255,255,255,.35);box-shadow:0 2px 7px rgba(0,0,0,.15)}
-.fall-note.right{background:var(--right)}.fall-note.left{background:var(--left)}.fall-note.hit{background:var(--good)!important}.fall-note.expected{outline:4px solid var(--text);outline-offset:2px}.fall-note.wrong{animation:noteShake .18s linear 1}
-.fall-note .cn{font-size:22px;line-height:1}.fall-note .nn{font-size:10px;margin-top:3px}.fall-note .fn{font-size:9px;margin-top:2px;opacity:.9}
-@keyframes noteShake{0%,100%{transform:translateX(0)}33%{transform:translateX(-4px)}66%{transform:translateX(4px)}}
-#strikeLine{position:absolute;left:0;right:0;bottom:3px;height:4px;background:var(--text);z-index:8;box-shadow:0 0 8px rgba(255,255,255,.25)}
-.cascade-keyboard-shell{height:190px;overflow-x:auto;background:var(--panel);border-top:1px solid var(--border);scroll-behavior:smooth}
-#cascadeKeyboard{position:relative;height:180px;user-select:none;margin:0}
-#cascadeKeyboard .white-key{height:180px}#cascadeKeyboard .black-key{height:108px}
-.cascade-countdown{position:absolute;inset:0;z-index:20;display:none;align-items:center;justify-content:center;background:rgba(10,10,15,.55);color:#fff;font-size:min(32vw,150px);font-weight:950}
-.cascade-countdown.show{display:flex}
-.cascade-settings{position:absolute;inset:0;z-index:30;background:var(--bg);overflow:auto;padding:14px;display:none}.cascade-settings.show{display:block}
-.cascade-settings .card{max-width:720px;margin:0 auto 12px}
-.toggle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.toggle-grid button{min-height:46px;border-radius:12px;background:var(--bg);color:var(--text);font-weight:800;border:1px solid var(--border)}.toggle-grid button.on{background:var(--accent2);border-color:var(--accent)}
-.detected{padding:7px 10px;border-radius:999px;background:var(--bg);font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-@media(max-width:560px){.cascade-bar{padding:6px}.cascade-bar button{padding:7px 9px}.cascade-status{display:none}.cascade-keyboard-shell{height:165px}#cascadeKeyboard,#cascadeKeyboard .white-key{height:155px}#cascadeKeyboard .black-key{height:94px}}
-@media(orientation:landscape){.cascade-keyboard-shell{height:145px}#cascadeKeyboard,#cascadeKeyboard .white-key{height:138px}#cascadeKeyboard .black-key{height:84px}.cascade-bar{min-height:50px}}
-
-/* ===== PIANO DOUX : FLUX PRIORITAIRE ===== */
-.quick-home-play{font-size:24px;min-height:70px}
-.cascade-songbar{display:flex;gap:8px;align-items:center;padding:7px 10px;background:var(--panel);border-bottom:1px solid var(--border);overflow-x:auto}
-.song-progress{display:flex;gap:5px;flex:1;min-width:240px}
-.song-progress button{position:relative;min-height:36px;padding:6px 9px;border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:10px;font-size:11px;font-weight:800;white-space:nowrap}
-.song-progress button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-.measure-indicator{font-size:11px;font-weight:900;white-space:nowrap}
-.next-notes{position:absolute;left:50%;transform:translateX(-50%);bottom:14px;z-index:10;display:flex;gap:6px;pointer-events:none}
-.next-note{min-width:46px;padding:5px 7px;border-radius:9px;background:var(--panel);border:2px solid var(--border);text-align:center;font-weight:900;font-size:12px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
-.next-note:first-child{border-color:var(--accent)}
-.edge-arrow{position:absolute;z-index:12;top:50%;transform:translateY(-50%);font-size:32px;font-weight:950;background:var(--panel);border:2px solid var(--accent);color:var(--accent);width:44px;height:54px;border-radius:12px;display:none;align-items:center;justify-content:center}
-#edgeLeft{left:8px}#edgeRight{right:8px}
-.bravo-flash{position:absolute;inset:0;z-index:25;display:none;align-items:center;justify-content:center;background:rgba(20,20,30,.38);color:#fff;font-size:44px;font-weight:950}.bravo-flash.show{display:flex}
-.play-mode-select{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.play-mode-select button{min-height:46px;border-radius:12px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-weight:850}.play-mode-select button.active{background:var(--accent);color:#fff}
-.midi-retry{display:none;margin-top:8px;padding:10px;border-radius:12px;background:var(--bg);font-size:12px;font-weight:800;cursor:pointer}
-.headphone-tip{display:none;margin-top:8px;padding:9px;border-radius:10px;background:var(--bg);font-size:12px;font-weight:800}
-.cascade-stage .fall-note{transition:outline .1s}
-@media(max-width:650px){.cascade-songbar{padding:5px 7px}.measure-indicator{font-size:10px}.song-progress button{padding:5px 7px}.next-notes{bottom:10px}.next-note{min-width:40px;padding:4px;font-size:11px}}
+*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+:root{--bg1:#17142f;--bg2:#273d78;--panel:#242044e8;--txt:#fff;--muted:#c8c8df;--rh:#d95cff;--lh:#36d7b7;--good:#70e8a8;--key:#fff;--black:#171827;--line:#ffffff35}
+body[data-theme="bonbon"]{--bg1:#4d285f;--bg2:#a95378;--panel:#512f64e8;--rh:#ff72cf;--lh:#4de0c0}
+body[data-theme="ocean"]{--bg1:#08243b;--bg2:#126078;--panel:#0b344de8;--rh:#bd79ff;--lh:#31e1ce}
+body{background:linear-gradient(155deg,var(--bg1),var(--bg2));color:var(--txt);overflow:hidden}
+button,select,input{font:inherit}.hidden{display:none!important}
+#app{height:100%;display:grid;grid-template-rows:auto auto 1fr auto;background:radial-gradient(circle at 80% 10%,#ffffff13,transparent 28%)}
+header{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#100d25aa;backdrop-filter:blur(10px)}
+.title{min-width:0;flex:1}.title b{display:block;font-size:clamp(18px,4vw,26px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.title small{color:var(--muted)}
+.pill,.icon{border:1px solid #ffffff2c;background:#ffffff12;color:white;border-radius:18px;padding:8px 11px}.icon{width:42px;height:42px;padding:0}
+#playBtn{border:0;border-radius:20px;background:linear-gradient(135deg,#8f64ff,#d85ad9);color:white;font-weight:900;font-size:clamp(24px,6vw,38px);padding:15px 28px;box-shadow:0 12px 30px #0005;min-width:180px}
+#hero{display:flex;align-items:center;justify-content:center;gap:12px;padding:8px 10px}
+#countdown{font-size:48px;font-weight:1000;position:absolute;z-index:30;left:50%;top:43%;transform:translate(-50%,-50%);text-shadow:0 4px 18px #000}
+#path{padding:0 12px 8px}.sections{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none}.sec{flex:1;min-width:76px;border:1px solid #ffffff25;background:#ffffff0e;color:#ddd;border-radius:14px;padding:7px;font-size:12px}.sec.active{background:#ffffff2a;color:#fff;outline:2px solid #fff6}.sec.bad{box-shadow:inset 0 -3px #ffb35c}
+.track{height:7px;background:#ffffff20;border-radius:9px;margin-top:7px;position:relative}.track>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--lh),var(--rh));border-radius:9px}.runner{position:absolute;top:-14px;left:0;font-size:22px;transition:left .2s linear}
+#stage{position:relative;min-height:0;overflow:hidden;margin:0 8px 4px;border-radius:22px;background:linear-gradient(#0d0c20bb,#151431dd);border:1px solid #ffffff18;box-shadow:inset 0 0 45px #0005}
+#fall{position:absolute;inset:0;overflow:hidden}.note{position:absolute;border-radius:18px 18px 11px 11px;display:flex;align-items:center;justify-content:center;font-weight:1000;font-size:clamp(19px,4vw,30px);box-shadow:0 8px 18px #0005,inset 0 2px #ffffff55;transition:opacity .18s,transform .18s}.note.rh{background:linear-gradient(#f183ff,var(--rh))}.note.lh{background:linear-gradient(#64f2d5,var(--lh));color:#072d2a}.note.hit{background:var(--good);transform:scale(1.08);opacity:.3}
+#strike{position:absolute;left:10px;right:10px;bottom:4px;height:3px;background:#fff;box-shadow:0 0 12px #fff;border-radius:4px}
+#preview{position:absolute;top:8px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:5}.peek{background:#0c0b1eb8;border:1px solid #ffffff25;border-radius:10px;padding:5px 8px;font-weight:800}
+#arrowL,#arrowR{position:absolute;top:48%;z-index:6;font-size:30px;background:#0a0919b8;border-radius:50%;padding:3px 9px}#arrowL{left:5px}#arrowR{right:5px}
+#maestro{position:absolute;right:12px;bottom:10px;z-index:8;display:flex;align-items:flex-end;gap:6px;max-width:44%}.face{font-size:43px;filter:drop-shadow(0 4px 5px #0006);transform-origin:bottom center}.face.nod{animation:nod .45s}.face.dance{animation:dance .5s}.bubble{font-size:12px;background:#fff;color:#29213d;border-radius:13px 13px 3px 13px;padding:6px 8px;box-shadow:0 4px 10px #0004}.quiet .bubble{display:none}.reduced .face{animation:none!important}
+@keyframes nod{50%{transform:rotate(8deg) translateY(2px)}}@keyframes dance{25%{transform:rotate(-12deg)}75%{transform:rotate(12deg)}}
+.spark{position:absolute;width:7px;height:7px;border-radius:50%;background:#fff;pointer-events:none;animation:spark .5s forwards}@keyframes spark{to{transform:translate(var(--x),var(--y)) scale(0);opacity:0}}
+#keyboardWrap{height:clamp(138px,24vh,205px);overflow:hidden;background:#111226;padding:5px 8px 9px}
+#keyboard{height:100%;display:flex;position:relative;margin:auto;max-width:100%}.white{height:100%;background:linear-gradient(#fff,#e9e9f1);border:1px solid #a9a9b5;border-radius:0 0 9px 9px;color:#262638;position:relative;display:flex;align-items:flex-end;justify-content:center;padding-bottom:7px;font-weight:900;min-width:0}.white.rh .num{color:#8b45df}.white.lh .num{color:#148e82}.white.glow{box-shadow:inset 0 0 25px #ffe36c,0 0 16px #ffe36c;z-index:3}.num{font-size:clamp(15px,3.2vw,25px);line-height:1}.nm{font-size:10px}.black{position:absolute;top:0;height:58%;background:linear-gradient(#282a3b,#0f1018);border-radius:0 0 6px 6px;z-index:4;color:white;font-size:9px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:5px}
+#hud{position:absolute;left:10px;top:9px;z-index:7;display:flex;gap:6px;align-items:center}.hud{background:#090819bb;border:1px solid #ffffff22;border-radius:12px;padding:6px 8px;font-weight:800;font-size:12px}
+#msg{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);z-index:12;background:#fff;color:#252238;border-radius:16px;padding:8px 13px;font-weight:900;opacity:0;transition:opacity .2s;white-space:nowrap}.show{opacity:1!important}
+#actions{position:absolute;z-index:15;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:7px}.action{border:0;border-radius:16px;padding:10px 13px;font-weight:900}
+#settings,#costumes,#finish,#sessionEnd{position:fixed;inset:0;background:#0b091bdc;z-index:50;display:grid;place-items:center;padding:18px}.card{width:min(520px,100%);max-height:88vh;overflow:auto;background:#242044;border:1px solid #ffffff25;border-radius:24px;padding:18px;box-shadow:0 18px 60px #0008}.row{display:flex;gap:8px;align-items:center;justify-content:space-between;margin:10px 0}.row button,.card button{border:0;border-radius:14px;padding:10px 12px;font-weight:800}.themes button{flex:1}.costumeGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.cost{background:#ffffff10;border-radius:16px;padding:12px;text-align:center}.locked{opacity:.35}
+#finish .card,#sessionEnd .card{text-align:center}.stars{font-size:42px}.confetti{position:fixed;inset:0;pointer-events:none;z-index:70;overflow:hidden}.conf{position:absolute;top:-15px;font-size:18px;animation:drop 2s linear forwards}@keyframes drop{to{transform:translateY(105vh) rotate(300deg);opacity:.3}}
+body.easy .lh.note{display:none}body.easy .white.lh{opacity:.55}
+@media(max-height:650px){header{padding:5px 8px}#hero{padding:3px}#playBtn{padding:8px 22px;font-size:22px}#path{padding-bottom:4px}#keyboardWrap{height:135px}}
 </style>
 </head>
-<body>
-<div class="app">
-<header><div class="brand"><strong>🎹 Piano Doux</strong><small>5 minutes à la fois</small></div><div class="header-actions"><button class="icon-btn" id="pauseBtn">⏸️</button><button class="icon-btn" id="darkBtn">🌙</button></div></header>
-<main>
-<section id="homeScreen" class="screen active">
-<div class="card"><span class="badge">Aujourd'hui</span><h1 style="margin-top:10px">Une petite séance suffit.</h1><p class="muted">Objectif : quelques notes pendant 5 minutes.</p><button class="big-btn quick-home-play" id="quickPlayBtn">▶ Jouer</button><button class="big-btn" id="continueBtn">▶ Reprendre ma séance</button></div>
-<div class="card"><h2>Ma semaine</h2><div class="stat-grid"><div class="stat"><strong id="weekSessions">0</strong><small>séances</small></div><div class="stat"><strong id="totalMinutes">0</strong><small>minutes</small></div><div class="stat"><strong id="songsStarted">0</strong><small>morceaux</small></div></div></div>
-<div class="card"><h2>Mini objectif</h2><p>5 minutes de piano</p><div class="progress"><div id="goalProgress"></div></div><p class="muted mini" id="goalDetail" style="margin-top:8px">Chaque note compte.</p></div>
-</section>
-<section id="songsScreen" class="screen"><div class="card"><h1>Choisis un morceau</h1><p class="muted">Commence par celui qui te donne envie.</p><div id="songList" class="song-list"></div></div><div class="card"><h2>Progression proposée</h2><div id="futureList" class="song-list"></div></div></section>
-<section id="practiceScreen" class="screen"><div class="practice-layout"><div>
-<div class="card"><div class="practice-top"><div><span class="badge" id="practiceSong"></span><h1 id="practiceTitle" style="margin-top:9px"></h1><p class="muted" id="practiceInfo"></p></div><div><label>Niveau</label><div id="levels" class="levels"></div></div><div><label>Bloc de 4 mesures</label><select id="blockSelect"></select></div><div><label>Vitesse : <span id="speedLabel">60</span> %</label><input id="speedSlider" type="range" min="40" max="100" value="60" step="5"></div><div class="row"><button class="big-btn secondary grow" id="listenBtn">🔊 Écouter</button><button class="big-btn secondary grow" id="loopBtn">🔁 Boucle</button></div></div></div>
-<div class="card"><div class="current-task"><small id="handLabel">MAIN DROITE</small><div class="next" id="nextNote">1</div><div id="nextName">Do · C</div></div><div class="chord-box" style="margin-top:10px"><span>Accord :</span><span id="chordDisplay">Dm</span><button class="icon-btn" id="chordModeBtn">①</button></div><div id="encouragement" class="encouragement" style="margin-top:12px">À ton rythme.</div></div>
-</div><div>
-<div class="card"><div class="row wrap"><strong>Séquence</strong><span class="badge">🟣 MD : 1 = Do central</span><span class="badge">🟢 MG : G1, G2… à gauche</span></div><div id="sequence" class="sequence"></div><div class="progress"><div id="practiceProgress"></div></div></div>
-<div class="card"><div class="row wrap" style="margin-bottom:12px"><div class="grow"><label>Clavier Edenwood · Do central = 1</label><div class="segmented" id="octaveSelector"><button data-oct="1">MG + 1 MD</button><button data-oct="2" class="active">MG + 2 MD</button><button data-oct="3">MG + 3 MD</button></div></div><div class="grow"><label>Affichage</label><select id="labelMode"><option value="both">Numéro + note</option><option value="number">Numéro seul</option><option value="note">Note seule</option></select></div></div><div class="keyboard-shell"><div id="keyboard" class="keyboard"></div></div></div>
-<div class="card"><div class="controls"><button class="big-btn" id="startPracticeBtn">▶ Commencer</button><button class="big-btn secondary" id="waitModeBtn">✓ Mode : attendre mon appui</button><button class="big-btn secondary" id="restartBlockBtn">↺ Recommencer le bloc</button><button class="big-btn cascade-launch" id="cascadeLaunchBtn">⬇ Jouer en cascade</button></div></div>
-</div></div></section>
-<section id="editorScreen" class="screen"><div class="card"><h1>Créer mon morceau</h1><p class="muted">Écris simplement les numéros des touches.</p><div class="form-grid"><div><label>Nom</label><input id="editTitle" type="text" placeholder="Mon morceau"></div><div><label>Artiste</label><input id="editArtist" type="text" placeholder="Facultatif"></div><div><label>Main droite</label><textarea id="editRight" placeholder="1 3 5 5 | 4 3 2 1"></textarea></div><div><label>Main gauche</label><textarea id="editLeft" placeholder="1 1 4 4 | 5 5 1 1"></textarea></div><div><label>Accords</label><input id="editChords" type="text" placeholder="C | Am | F | G"></div><div><label>Tempo</label><input id="editBpm" type="number" min="40" max="200" value="70"></div><button class="big-btn" id="saveSongBtn">💾 Ajouter le morceau</button></div></div><div class="card"><h2>Mes morceaux</h2><div id="customSongs" class="song-list"></div></div><div class="card"><h2>Sauvegarde</h2><div class="controls"><button class="big-btn secondary" id="exportBtn">⬇ Exporter mes données</button><label class="big-btn secondary" style="text-align:center;cursor:pointer">⬆ Importer mes données<input id="importInput" type="file" accept=".json" hidden></label></div></div></section>
-</main></div>
-
-<div id="cascadeOverlay">
-  <div class="cascade-bar">
-    <button id="cascadeExitBtn">←</button>
-    <button class="pause-main" id="cascadePauseBtn">▶ Jouer</button>
-    <div class="detected" id="heardDisplay">J’ai entendu : —</div>
-    <span class="cascade-status status-off" id="inputStatus">Entrée : écran</span>
-    <button id="cascadeSettingsBtn">⚙️</button>
-  </div>
-  
-  <div class="cascade-songbar">
-    <div class="song-progress" id="songProgress"></div>
-    <div class="measure-indicator" id="measureIndicator">mesure 1 sur 8</div>
-  </div>
-<div class="cascade-stage" id="cascadeStage">
-    <div id="fallArea"></div>
-    <div id="strikeLine"></div>
-    <div class="next-notes" id="nextNotes"></div>
-    <div class="edge-arrow" id="edgeLeft">←</div>
-    <div class="edge-arrow" id="edgeRight">→</div>
-    <div class="bravo-flash" id="bravoFlash">Bravo</div>
-    <div class="cascade-countdown" id="cascadeCountdown">3</div>
-    <div class="cascade-settings" id="cascadeSettings">
-      <div class="card">
-        <h2>Jouer</h2>
-        <div class="play-mode-select" id="playModeSelect">
-          <button data-pmode="listen">Écouter</button>
-          <button data-pmode="with" class="active">Avec moi</button>
-          <button data-pmode="solo">Seul</button>
-        </div>
-        <div style="margin-top:12px"><label>Volume accompagnement : <span id="accompVolumeLabel">45</span> %</label><input id="accompVolume" type="range" min="0" max="100" value="45" step="5"></div>
-        <button class="big-btn secondary" id="originalBtn" style="margin-top:10px">▶ Écouter l’original</button>
-        <div class="headphone-tip" id="headphoneTip">🎧 Mets un casque pour l’accompagnement, sinon le micro se mélange.</div>
-      </div>
-      <div class="card">
-        <h2>Mode cascade</h2>
-        <div class="segmented" id="cascadeModeSeg"><button data-cmode="wait" class="active">J’attends</button><button data-cmode="tempo">Tempo</button></div>
-        <div id="cascadeTempoBox" style="margin-top:14px;display:none"><label>Vitesse : <span id="cascadeSpeedLabel">60</span> %</label><input id="cascadeSpeed" type="range" min="40" max="100" step="5" value="60"></div>
-        <div style="margin-top:14px"><label>Afficher dans les notes</label><div class="toggle-grid"><button id="showNumsBtn" class="on">Numéros</button><button id="showNamesBtn" class="on">Notes</button><button id="showFingersBtn" class="on">Doigts</button></div></div>
-        <button class="big-btn secondary" id="cascadeLoopBtn" style="margin-top:12px">🔁 Boucle 4 mesures : non</button>
-      </div>
-      <div class="card">
-        <h2>Mon Edenwood</h2>
-        <button class="big-btn" id="midiConnectBtn">🔌 Connecter mon clavier</button>
-        <p class="muted mini" id="midiStatus" style="margin-top:8px">MIDI : non connecté</p>
-        <div class="midi-retry" id="midiRetry">Vérifie le câble USB et que le clavier est allumé, puis touche ici pour réessayer.</div>
-        <button class="big-btn secondary" id="micConnectBtn">🎙 Activer le micro</button>
-        <div style="margin-top:10px"><label>Tolérance micro : <span id="micToleranceLabel">45</span> cents</label><input id="micTolerance" type="range" min="20" max="80" value="45" step="5"></div>
-        <label style="margin-top:10px"><input type="checkbox" id="fullChordMidi"> Accords : exiger toutes les notes avec MIDI</label>
-      </div>
-      <div class="card">
-        <strong>Connexion en 3 étapes</strong>
-        <p class="mini muted" style="margin:8px 0 0">1. Relie l’Edenwood au téléphone/ordinateur avec son câble USB (adaptateur USB-C/OTG si nécessaire).<br>2. Appuie sur « Connecter mon clavier » et autorise le MIDI si le navigateur le demande.<br>3. Si le MIDI n’est pas disponible, appuie sur « Activer le micro » puis autorise le micro.</p>
-      </div>
-      <button class="big-btn" id="cascadeSettingsClose">Retour à la cascade</button>
-    </div>
-  </div>
-  <div class="cascade-keyboard-shell" id="cascadeKeyboardShell"><div id="cascadeKeyboard"></div></div>
+<body data-theme="night">
+<div id="app">
+<header>
+ <div class="title"><b id="songTitle">Now We Are Free</b><small id="status">Mode direct · morceau entier</small></div>
+ <span class="pill" id="combo">x0</span><span class="pill" id="timer">5:00</span>
+ <button class="icon" id="costumeBtn" aria-label="Costumes">🎩</button><button class="icon" id="gear" aria-label="Réglages">⚙️</button>
+</header>
+<div id="hero"><button id="playBtn">▶ Jouer</button></div>
+<div id="path"><div class="sections" id="sections"></div><div class="track"><i id="progress"></i><span class="runner" id="runner">🎹</span></div></div>
+<div id="stage">
+ <div id="hud"><span class="hud" id="measure">mesure 1</span><span class="hud" id="score">Score 0</span></div>
+ <div id="preview"></div><div id="arrowL" class="hidden">←</div><div id="arrowR" class="hidden">→</div>
+ <div id="fall"></div><div id="strike"></div>
+ <div id="maestro"><div class="bubble" id="bubble">Allez, on joue !</div><div class="face" id="face">🥸🎹</div></div>
+ <div id="msg"></div><div id="actions" class="hidden"><button class="action" id="replayPass">↻ Rejouer ce passage</button><button class="action" id="easyBtn">Version facile</button></div>
 </div>
-<nav class="bottom-nav"><div class="bottom-nav-inner"><button class="nav-btn active" data-screen="homeScreen"><span>🏠</span>Accueil</button><button class="nav-btn" data-screen="songsScreen"><span>🎵</span>Morceaux</button><button class="nav-btn" data-screen="practiceScreen"><span>🎹</span>Jouer</button><button class="nav-btn" data-screen="editorScreen"><span>✏️</span>Créer</button></div></nav>
+<div id="keyboardWrap"><div id="keyboard"></div></div>
+<div id="countdown" class="hidden"></div>
+</div>
+
+<div id="settings" class="hidden"><div class="card">
+ <h2>⚙️ Réglages</h2>
+ <div class="row"><b>Thème</b><div class="themes"><button data-theme="night">Nuit</button><button data-theme="bonbon">Bonbon</button><button data-theme="ocean">Océan</button></div></div>
+ <div class="row"><label>Accompagnement</label><input id="vol" type="range" min="0" max="1" step=".05" value=".32"></div>
+ <div class="row"><span>Maestro parle</span><input id="talk" type="checkbox" checked></div>
+ <div class="row"><span>Animations réduites</span><input id="reduce" type="checkbox"></div>
+ <div class="row"><span id="inputState">Détection : micro automatique</span><button id="retry">Réessayer MIDI</button></div>
+ <small id="micTip">Avec l'accompagnement, mets un casque pour éviter que le micro se mélange.</small>
+ <div class="row"><button id="original">Écouter l'original</button><button id="closeSettings">Fermer</button></div>
+</div></div>
+
+<div id="costumes" class="hidden"><div class="card"><h2>🎭 Mes costumes</h2><div class="costumeGrid" id="costumeGrid"></div><button id="closeCostumes">Fermer</button></div></div>
+<div id="finish" class="hidden"><div class="card"><div class="stars" id="stars">⭐</div><h2>Bravo !</h2><p id="finishText">Morceau terminé.</p><button id="replay">▶ Rejouer</button></div></div>
+<div id="sessionEnd" class="hidden"><div class="card"><h2 id="sessionText">Bravo, tu as joué 5 minutes</h2><button id="more5">Encore 5 min</button><button id="tomorrow">À demain</button></div></div>
+<div id="confetti" class="confetti"></div>
+
 <script>
-const BUILTIN_SONGS=[
-{id:"now-free",title:"Now We Are Free",artist:"Hans Zimmer / Lisa Gerrard",difficulty:1,key:"Ré mineur",bpm:72,chords:["Dm","C","Bb","C"],blocks:[{name:"Bloc 1",right:[6,8,9,8,6,5,6,8],left:[2,2,1,1,7,7,1,1],fingersRight:[1,3,4,3,1,2,1,3],fingersLeft:[5,5,5,5,5,5,5,5]},{name:"Bloc 2",right:[9,10,9,8,6,8,6,5],left:[2,2,1,1,7,7,1,1],fingersRight:[4,5,4,3,1,3,1,2],fingersLeft:[5,5,5,5,5,5,5,5]}]},
-{id:"zombie",title:"Zombie",artist:"The Cranberries",difficulty:1,key:"Mi mineur",bpm:84,chords:["Em","C","G","D"],blocks:[{name:"Bloc 1",right:[3,3,5,6,5,3,2,3],left:[3,3,1,1,5,5,2,2],fingersRight:[1,1,3,4,3,1,2,1],fingersLeft:[5,5,5,5,5,5,5,5]},{name:"Bloc 2",right:[5,5,6,8,6,5,3,2],left:[3,3,1,1,5,5,2,2],fingersRight:[3,3,4,5,4,3,1,2],fingersLeft:[5,5,5,5,5,5,5,5]}]},
-{id:"river",title:"River Flows in You",artist:"Yiruma",difficulty:2,key:"La majeur / Fa# mineur",bpm:78,chords:["F#m","D","A","E"],blocks:[{name:"Bloc 1",right:[6,8,10,8,6,8,10,11],left:[6,6,4,4,1,1,3,3],fingersRight:[1,2,4,2,1,2,4,5],fingersLeft:[5,5,5,5,5,5,5,5]},{name:"Bloc 2",right:[10,8,6,5,6,8,6,5],left:[6,6,4,4,1,1,3,3],fingersRight:[4,2,1,2,1,3,1,2],fingersLeft:[5,5,5,5,5,5,5,5]}]}
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const NOTE_NAMES=['Do','Do♯','Ré','Ré♯','Mi','Fa','Fa♯','Sol','Sol♯','La','La♯','Si'];
+const WHITE_PC=[0,2,4,5,7,9,11];
+const jokes=[
+"Allez, on joue !","Ça swingue dans la moustache !","Joli !","Très chic, cette note !","Mes lunettes approuvent.",
+"Encore une et je danse !","La moustache est impressionnée.","Ça, c'était propre !","Hop, dans la poche !","Quel doigté !",
+"Pas grave, on continue !","On garde le rythme !","Je reste avec toi.","Une note après l'autre.","Même ma perruque suit !",
+"Mozart serait jaloux (un tout petit peu) !","Bravo, maestro !","Ça mérite un mini-applaudissement.","Le piano sourit.","On tient le fil !",
+"Très joli passage !","Je salue cette note.","La classe au clavier.","Ça avance !","On continue comme ça."
 ];
-const FUTURE_REPERTOIRE=[["Now We Are Free","Hans Zimmer",1],["Zombie","The Cranberries",1],["Chasing Cars","Snow Patrol",1],["The Scientist","Coldplay",1],["What Was I Made For?","Billie Eilish",1],["River Flows in You","Yiruma",2],["Always Remember Us This Way","Lady Gaga",2],["Halo","Beyoncé",2],["Lovely","Billie Eilish",2],["Voilà","Barbara Pravi",2],["Oceans (Where Feet May Fail)","Hillsong UNITED",2],["Tattoo","Loreen",3],["Game of Thrones","Main Theme",3],["Corpse Bride","Piano Duet / thème",3],["The Final Countdown","Europe",3],["Harry Potter","Hedwig's Theme",4],["La Cumparsita","Tango",4],["Dai Dai","Shakira & Burna Boy",4]].map(x=>({title:x[0],artist:x[1],difficulty:x[2]}));
-const STORAGE_KEY="pianoDouxDataV1",defaultState={selectedSong:"now-free",level:1,block:0,speed:60,octaves:2,labelMode:"both",waitMode:true,loop:false,chordMode:1,noteIndex:0,customSongs:[],progress:{},sessions:[],minutes:0,dark:false};
-let state=loadState(),audioCtx=null,practiceRunning=false,practiceStartedAt=null,wakeLock=null,playbackTimer=null;
-const DIATONIC=[{semi:0,fr:"Do",en:"C"},{semi:2,fr:"Ré",en:"D"},{semi:4,fr:"Mi",en:"E"},{semi:5,fr:"Fa",en:"F"},{semi:7,fr:"Sol",en:"G"},{semi:9,fr:"La",en:"A"},{semi:11,fr:"Si",en:"B"}];
-const LETTERS=["C","C♯","D","D♯","E","F","F♯","G","G♯","A","A♯","B"],LEVELS=[{n:1,label:"Main droite · découverte"},{n:2,label:"Main droite · rythme"},{n:3,label:"Main gauche"},{n:4,label:"Deux mains · lent"},{n:5,label:"Deux mains · normal"}];
-function loadState(){try{return {...defaultState,...(JSON.parse(localStorage.getItem(STORAGE_KEY)||"null")||{})}}catch(e){return {...defaultState}}}
-function saveState(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}
-function allSongs(){return [...BUILTIN_SONGS,...state.customSongs]} function getSong(){return allSongs().find(s=>s.id===state.selectedSong)||BUILTIN_SONGS[0]}
-function ensureAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume()}
-function playMidi(m,d=.45,v=.22){ensureAudio();let o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type="triangle";o.frequency.value=440*Math.pow(2,(m-69)/12);g.gain.setValueAtTime(v,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+d);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+d)}
-function numMidi(n){let z=n-1;return 60+Math.floor(z/7)*12+DIATONIC[z%7].semi} function playNumber(n,d=.45){playMidi(numMidi(n),d)}
-function showScreen(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".nav-btn").forEach(b=>b.classList.toggle("active",b.dataset.screen===id));if(id==="practiceScreen")renderPractice()}
-document.querySelectorAll(".nav-btn").forEach(b=>b.onclick=()=>showScreen(b.dataset.screen));
-function stars(n){return "★".repeat(n)+"☆".repeat(5-n)}
-function renderHome(){let ago=Date.now()-7*86400000;document.getElementById("weekSessions").textContent=state.sessions.filter(d=>new Date(d).getTime()>ago).length;document.getElementById("totalMinutes").textContent=Math.round(state.minutes||0);document.getElementById("songsStarted").textContent=Object.keys(state.progress||{}).length;let today=new Date().toISOString().slice(0,10),done=state.sessions.some(x=>String(x).slice(0,10)===today);document.getElementById("goalProgress").style.width=done?"100%":"0%";document.getElementById("goalDetail").textContent=done?"Objectif du jour atteint 🌱":"Pas besoin d'en faire plus que nécessaire."}
-function esc(v){return String(v).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;")}
-function renderSongs(){let l=document.getElementById("songList");l.innerHTML="";allSongs().forEach(s=>{let b=document.createElement("button");b.className="song "+(s.id===state.selectedSong?"selected":"");b.innerHTML=`<div class="song-title"><span>${esc(s.title)}</span><span class="stars">${stars(s.difficulty||1)}</span></div><div class="song-meta">${esc(s.artist||"")} · ${s.bpm||70} BPM</div>`;b.onclick=()=>{state.selectedSong=s.id;state.block=0;state.noteIndex=0;saveState();showScreen("practiceScreen")};l.appendChild(b)});let f=document.getElementById("futureList");f.innerHTML="";FUTURE_REPERTOIRE.forEach((s,i)=>{let d=document.createElement("div");d.className="song";d.innerHTML=`<div class="song-title"><span>${i+1}. ${esc(s.title)}</span><span class="stars">${stars(s.difficulty)}</span></div><div class="song-meta">${esc(s.artist)}</div>`;f.appendChild(d)})}
-function unlocked(s){return Math.max(1,(state.progress[s.id]||{}).level||1)}
-function renderLevels(){let s=getSong(),c=document.getElementById("levels"),u=unlocked(s);c.innerHTML="";LEVELS.forEach(l=>{let b=document.createElement("button");b.className="level "+(state.level===l.n?"active ":"")+(l.n>u?"locked":"");b.innerHTML=`<strong>${l.n}. ${l.label}</strong>`;b.onclick=()=>{if(l.n>u){setMsg("Encore un petit bloc avant celui-ci.");return}state.level=l.n;if(l.n===4&&state.speed>60)state.speed=60;if(l.n===5)state.speed=100;resetBlock();saveState();renderPractice()};c.appendChild(b)})}
-function activeBlock(){let s=getSong();return s.blocks[Math.min(state.block,s.blocks.length-1)]}
-function seq(){let b=activeBlock();if(state.level<=2)return b.right.map((n,i)=>({n,hand:"right",finger:b.fingersRight?.[i]||1}));if(state.level===3)return b.left.map((n,i)=>({n,hand:"left",finger:b.fingersLeft?.[i]||5}));let r=[],m=Math.max(b.right.length,b.left.length);for(let i=0;i<m;i++){if(b.left[i]!=null)r.push({n:b.left[i],hand:"left",finger:b.fingersLeft?.[i]||5});if(b.right[i]!=null)r.push({n:b.right[i],hand:"right",finger:b.fingersRight?.[i]||1})}return r}
-function numberName(n){let z=n-1,d=((z%7)+7)%7;return DIATONIC[d]}
-function renderSequence(){let s=seq(),box=document.getElementById("sequence");box.innerHTML="";s.forEach((x,i)=>{let e=document.createElement("div");e.className="seq-note "+(i===state.noteIndex?"active ":"")+(i<state.noteIndex?"done":"");e.style.borderBottom=`4px solid ${x.hand==="right"?"var(--right)":"var(--left)"}`;e.innerHTML=`<strong>${x.n}</strong><small style="display:block">${numberName(x.n).fr}</small><span class="finger">doigt ${x.finger}</span>`;box.appendChild(e)});document.getElementById("practiceProgress").style.width=Math.min(100,s.length?state.noteIndex/s.length*100:0)+"%"}
-function updateCurrent(){let s=seq();if(state.noteIndex>=s.length){blockComplete();return}let x=s[state.noteIndex],n=numberName(x.n),e=document.getElementById("nextNote");e.textContent=x.n;e.className="next "+(x.hand==="right"?"hand-right":"hand-left");document.getElementById("nextName").textContent=`${n.fr} · ${n.en} · doigt ${x.finger}`;document.getElementById("handLabel").textContent=x.hand==="right"?"MAIN DROITE":"MAIN GAUCHE";let song=getSong(),ci=Math.floor(state.noteIndex/Math.max(1,s.length/song.chords.length));document.getElementById("chordDisplay").textContent=song.chords[Math.min(ci,song.chords.length-1)]||"—";highlight(x)}
-function edenKeyInfo(m){
-  // Clavier Edenwood de Virginie :
-  // C4 (MIDI 60) = dinosaure rouge = MD 1.
-  // C3 (MIDI 48) = dinosaure bleu clair = MG 1.
-  // F4 (MIDI 65) = dinosaure bleu foncé = MD 4.
-  const pc=((m%12)+12)%12, whitePcs=[0,2,4,5,7,9,11], wi=whitePcs.indexOf(pc);
-  if(wi<0)return null;
-  if(m>=48 && m<=59) return {hand:"left",n:wi+1,code:"L"+(wi+1)};
-  if(m>=60){
-    const oct=Math.floor((m-60)/12);
-    return {hand:"right",n:oct*7+wi+1,code:"R"+(oct*7+wi+1)};
-  }
-  return null;
+const costumes=["🥸🎹","🎩🥸🎹","🪄🥸🎹","😎🥸🎹","🎸🥸","🧙🥸🎹"];
+const song={
+ id:"now-free", title:"Now We Are Free", artist:"Hans Zimmer / Lisa Gerrard", bpm:72,
+ sections:[
+  {name:"Intro",bars:4,rh:[6,8,9,8,6,5,6,8],lh:[2,2,1,1,7,7,1,1]},
+  {name:"Thème",bars:4,rh:[6,8,9,8,6,5,4,5,6,8,6,5],lh:[2,2,1,1,7,7,1,1,2,2,1,1]},
+  {name:"Couplet",bars:4,rh:[5,6,8,6,5,4,3,4,5,6,5,4],lh:[7,7,1,1,2,2,1,1,7,7,1,1]},
+  {name:"Refrain",bars:4,rh:[6,8,9,8,6,5,6,8,9,10,9,8,6,5,4,5],lh:[2,2,1,1,7,7,1,1,2,2,1,1,7,7,1,1]},
+  {name:"Final",bars:4,rh:[8,9,10,9,8,6,5,6,8,6,5,4,3,4,5,6],lh:[2,2,1,1,7,7,1,1,2,2,1,1,7,7,1,1]}
+ ]
+};
+// Direct-mode pedagogical arrangement: keeps the user's existing simplified note system.
+let st=JSON.parse(localStorage.getItem("pianoDirectState")||"{}");
+Object.assign(st,{score:st.score||0,unlocked:st.unlocked||1,theme:st.theme||"night",easy:!!st.easy,reduce:!!st.reduce,talk:st.talk!==false});
+let events=[],running=false,startAt=0,pauseAt=0,raf=0,nextAudio=0,audioCtx=null,master=null,combo=0,hits=[],played=[],secStats={},sessionLeft=300,sessionStart=0,midi=null,mic=null,micRAF=0,lastPitch=null,pitchSince=0,lastAppTone=0;
+function save(){localStorage.setItem("pianoDirectState",JSON.stringify(st))}
+function rhMidi(n){let z=n-1,oct=Math.floor(z/7),i=z%7;return 60+oct*12+WHITE_PC[i]}
+function lhMidi(n){return 48+WHITE_PC[(n-1)%7]}
+function buildEvents(){
+ events=[];let beat=0,idx=0;
+ song.sections.forEach((s,si)=>{
+   let max=Math.max(s.rh.length,s.lh.length);
+   for(let i=0;i<max;i++){
+    if(s.lh[i]!=null) events.push({i:idx++,beat,sec:si,hand:"lh",n:s.lh[i],midi:lhMidi(s.lh[i]),dur:1});
+    if(s.rh[i]!=null) events.push({i:idx++,beat,sec:si,hand:"rh",n:s.rh[i],midi:rhMidi(s.rh[i]),dur:1});
+    beat+=1;
+   }
+ });
+ events.sort((a,b)=>a.beat-b.beat|| (a.hand==="lh"?-1:1));
 }
-function midiNum(m){let x=edenKeyInfo(m);return x?x.n:null}
-function keyLabel(info,m){
-  let pc=((m%12)+12)%12;
-  if(!info)return `<div class="key-label"><span class="note">${LETTERS[pc]}</span></div>`;
-  let z=info.n-1,d=((z%7)+7)%7,x=DIATONIC[d];
-  let a=state.labelMode==="note"?"":`<span class="num">${info.n}</span>`;
-  let b=state.labelMode==="number"?"":`<span class="note">${x.fr}<br>${x.en}</span>`;
-  return `<div class="key-label">${a}${b}</div>`;
+buildEvents();
+const totalBeats=Math.max(...events.map(e=>e.beat+e.dur));
+function beatMs(sec){let factor=st.sectionSpeed?.[sec]||1;return 60000/song.bpm/factor}
+function timeForBeat(beat){
+ let t=0,last=0;
+ for(let si=0;si<song.sections.length;si++){
+   let secEvents=events.filter(e=>e.sec===si),end=Math.max(...secEvents.map(e=>e.beat+1)),start=Math.min(...secEvents.map(e=>e.beat));
+   if(beat>=end){t+=(end-start)*beatMs(si)}
+   else if(beat>=start){t+=(beat-start)*beatMs(si);return t}
+ }
+ return t;
 }
-function dinoMarkup(m){
-  if(m===60)return '<span class="dino-marker">🦖</span><span class="dino-caption">ROUGE · MD 1</span>';
-  if(m===65)return '<span class="dino-marker">🦕</span><span class="dino-caption">BLEU FONCÉ · MD 4</span>';
-  if(m===48)return '<span class="dino-marker">🦕</span><span class="dino-caption">BLEU CLAIR · MG 1</span>';
-  return "";
+const totalMs=()=>timeForBeat(totalBeats);
+function renderSections(){
+ $("#sections").innerHTML=song.sections.map((s,i)=>`<button class="sec" data-sec="${i}">${s.name}</button>`).join("");
+ $$(".sec").forEach(b=>b.onclick=()=>jumpSection(+b.dataset.sec));
+}
+renderSections();
+function rangeMidi(){
+ let ms=events.filter(e=>!st.easy||e.hand==="rh").map(e=>e.midi);
+ return [Math.min(...ms),Math.max(...ms)];
+}
+function whiteInfo(m){
+ let pc=m%12,wi=WHITE_PC.indexOf(pc);if(wi<0)return null;
+ if(m>=48&&m<=59)return {hand:"lh",n:wi+1};
+ if(m>=60){let oct=Math.floor((m-60)/12);return {hand:"rh",n:oct*7+wi+1}}
+ return {hand:"lh",n:wi+1};
 }
 function renderKeyboard(){
-  let k=document.getElementById("keyboard");k.innerHTML="";
-  let oct=state.octaves,w=oct===1?48:oct===2?44:40;
-  // Toujours montrer l'octave MG C3-B3 + le Do central et les octaves MD.
-  // 1 octave = MG + 1 octave MD ; 2/3 = MG + 2/3 octaves MD.
-  let startMidi=48,endMidi=60+oct*12;
-  let whiteCount=7+oct*7;
-  k.style.width=whiteCount*w+"px";
-  let wi=0,bo={1:.70,3:1.70,6:3.70,8:4.70,10:5.70};
-  for(let m=startMidi;m<endMidi;m++){
-    let pc=((m%12)+12)%12,black=[1,3,6,8,10].includes(pc),e=document.createElement("button");
-    e.dataset.midi=m;
-    if(!black){
-      let info=edenKeyInfo(m);
-      e.className="white-key "+(info?.hand==="left"?"eden-lh":"eden-rh");
-      e.style.left=wi*w+"px";e.style.width=w+"px";
-      if(info){e.dataset.number=info.n;e.dataset.hand=info.hand;e.dataset.code=info.code}
-      e.innerHTML=keyLabel(info,m)+dinoMarkup(m);
-      if(m===60)e.classList.add("dino-red");
-      if(m===65)e.classList.add("dino-darkblue");
-      if(m===48)e.classList.add("dino-lightblue");
-      wi++;
-    }else{
-      e.className="black-key";
-      // black key sits after the previous white key
-      e.style.left=(wi*w-w*.30)+"px";e.style.width=w*.60+"px";
-      e.innerHTML=`<div class="key-label"><span class="note">${LETTERS[pc]}</span></div>`;
-    }
-    e.onpointerdown=()=>pressKey(m,e);k.appendChild(e)
+ let [min,max]=rangeMidi(); min=Math.max(48,min-2); max=Math.min(83,max+2);
+ let whites=[];for(let m=min;m<=max;m++)if(WHITE_PC.includes(m%12))whites.push(m);
+ const kw=Math.max(22,Math.min(68,($("#keyboardWrap").clientWidth-16)/whites.length));
+ $("#keyboard").style.width=(kw*whites.length)+"px";
+ $("#keyboard").innerHTML="";
+ whites.forEach((m,wi)=>{
+  let inf=whiteInfo(m),d=document.createElement("div");d.className=`white ${inf.hand}`;d.style.width=kw+"px";d.dataset.midi=m;
+  d.innerHTML=`<div><div class="num">${inf.n}</div><div class="nm">${NOTE_NAMES[m%12]}</div></div>`;
+  d.onpointerdown=()=>userNote(m);$("#keyboard").appendChild(d);
+ });
+ let whiteIndex=0;
+ for(let m=min;m<=max;m++){
+  if(WHITE_PC.includes(m%12)){whiteIndex++;continue}
+  if([1,3,6,8,10].includes(m%12)&&whiteIndex>0&&whiteIndex<whites.length){
+   let b=document.createElement("div");b.className="black";b.style.width=(kw*.58)+"px";b.style.left=(whiteIndex*kw-kw*.29)+"px";b.dataset.midi=m;b.textContent=NOTE_NAMES[m%12];
+   b.onpointerdown=()=>userNote(m);$("#keyboard").appendChild(b);
   }
-  highlight()
+ }
 }
-function highlight(item){
-  document.querySelectorAll(".white-key,.black-key").forEach(k=>k.classList.remove("right-lit","left-lit"));
-  item=item||seq()[state.noteIndex];if(!item)return;
-  let selector=`[data-hand="${item.hand}"][data-number="${item.n}"]`;
-  let t=document.querySelector(selector);
-  // Compatibilité avec les exercices MD existants au-delà de 7.
-  if(!t && item.hand==="right")t=document.querySelector(`[data-code="R${item.n}"]`);
-  if(t){t.classList.add(item.hand==="right"?"right-lit":"left-lit");t.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"})}
+function renderNotes(now=0){
+ const stage=$("#stage"),H=stage.clientHeight,W=stage.clientWidth,[min,max]=rangeMidi();
+ let whiteMidis=[];for(let m=min;m<=max;m++)if(WHITE_PC.includes(m%12))whiteMidis.push(m);
+ let keyW=(W-24)/whiteMidis.length, strikeY=H-7, pxPerMs=.105;
+ $("#fall").innerHTML="";
+ let tnow=now;
+ events.forEach(e=>{
+  if(st.easy&&e.hand==="lh")return;
+  let et=timeForBeat(e.beat), delta=et-tnow;
+  if(delta < -350 || delta > H/pxPerMs+900)return;
+  let wi=whiteMidis.indexOf(e.midi);if(wi<0)return;
+  let d=document.createElement("div");d.className=`note ${e.hand}`;d.dataset.i=e.i;
+  let h=Math.max(38,beatMs(e.sec)*e.dur*pxPerMs*.78);
+  d.style.height=h+"px";d.style.width=Math.max(22,keyW-5)+"px";d.style.left=(12+wi*keyW+2.5)+"px";d.style.top=(strikeY-delta*pxPerMs-h)+"px";d.textContent=e.n;$("#fall").appendChild(d);
+ });
 }
-function pressKey(m,k){playMidi(m,.5);let info=edenKeyInfo(m);if(!practiceRunning||!info)return;let x=seq()[state.noteIndex];if(x&&info.n===x.n&&info.hand===x.hand){k.classList.add("correct");setTimeout(()=>k.classList.remove("correct"),180);advance()}else setMsg("Regarde simplement la touche éclairée.")}
-function advance(){state.noteIndex++;saveState();renderSequence();if(state.noteIndex>=seq().length)blockComplete();else updateCurrent()}
-function blockComplete(){practiceRunning=false;document.getElementById("startPracticeBtn").textContent="▶ Rejouer";document.getElementById("practiceProgress").style.width="100%";setMsg("Bloc terminé 🌱");let s=getSong();state.progress[s.id]=state.progress[s.id]||{level:1,blocks:{}};let p=state.progress[s.id];p.blocks=p.blocks||{};p.blocks[`${state.level}-${state.block}`]=true;if(state.block===s.blocks.length-1&&state.level<5)p.level=Math.max(p.level||1,state.level+1);saveState();renderLevels();if(state.loop)setTimeout(()=>{resetBlock();startPractice()},800)}
-function startPractice(){ensureAudio();requestWakeLock();if(state.noteIndex>=seq().length)state.noteIndex=0;practiceRunning=true;practiceStartedAt=practiceStartedAt||Date.now();document.getElementById("startPracticeBtn").textContent="⏸ Pause";setMsg("À ton rythme.");updateCurrent();renderSequence();if(!state.waitMode)autoAdvance()}
-function pausePractice(){practiceRunning=false;clearTimeout(playbackTimer);document.getElementById("startPracticeBtn").textContent="▶ Reprendre";savePracticeTime();setMsg("Ta place est sauvegardée.")}
-function savePracticeTime(){if(!practiceStartedAt)return;state.minutes=(state.minutes||0)+(Date.now()-practiceStartedAt)/60000;practiceStartedAt=null;saveState();renderHome()}
-function autoAdvance(){clearTimeout(playbackTimer);if(!practiceRunning||state.waitMode)return;let x=seq()[state.noteIndex];if(!x){blockComplete();return}playNumber(x.n,.3);let delay=60000/(getSong().bpm*state.speed/100);playbackTimer=setTimeout(()=>{advance();if(practiceRunning)autoAdvance()},delay)}
-async function listenBlock(){ensureAudio();let s=seq(),delay=60000/(getSong().bpm*state.speed/100);for(let x of s){playNumber(x.n,Math.min(.55,delay/1000*.8));await new Promise(r=>setTimeout(r,delay))}}
-function resetBlock(){practiceRunning=false;clearTimeout(playbackTimer);state.noteIndex=0;saveState();renderSequence();updateCurrent();document.getElementById("startPracticeBtn").textContent="▶ Commencer"}
-const CHORDS={C:[60,64,67],Dm:[62,65,69],Em:[64,67,71],F:[65,69,72],"F#m":[66,69,73],G:[55,59,62],A:[57,61,64],Am:[57,60,64],Bb:[58,62,65],D:[62,66,69],E:[64,68,71]};
-function playChord(){let c=CHORDS[document.getElementById("chordDisplay").textContent];if(!c)return;if(state.chordMode===1)playMidi(c[0],.8,.22);else c.forEach(m=>playMidi(m,.8,.12))}
-function renderPractice(){let s=getSong();document.getElementById("practiceSong").textContent="★".repeat(s.difficulty||1);document.getElementById("practiceTitle").textContent=s.title;document.getElementById("practiceInfo").textContent=`${s.artist||""} · ${s.key||""} · ${s.bpm||70} BPM`;renderLevels();let bs=document.getElementById("blockSelect");bs.innerHTML="";s.blocks.forEach((b,i)=>{let o=document.createElement("option");o.value=i;o.textContent=b.name||`Bloc ${i+1}`;bs.appendChild(o)});bs.value=state.block;document.getElementById("speedSlider").value=state.speed;document.getElementById("speedLabel").textContent=state.speed;document.getElementById("loopBtn").textContent=state.loop?"🔁 Boucle : oui":"🔁 Boucle : non";document.getElementById("waitModeBtn").textContent=state.waitMode?"✓ Mode : attendre mon appui":"▶ Mode : lecture automatique";document.getElementById("chordModeBtn").textContent=state.chordMode===1?"①":"②";renderSequence();renderKeyboard();updateCurrent()}
-function parseSeq(t){return t.replace(/\|/g," ").split(/\s+/).map(Number).filter(n=>Number.isFinite(n)&&n>0&&n<=21)}
-function saveCustom(){let title=document.getElementById("editTitle").value.trim();if(!title){alert("Ajoute un nom au morceau.");return}let r=parseSeq(document.getElementById("editRight").value),l=parseSeq(document.getElementById("editLeft").value);if(!r.length&&!l.length){alert("Ajoute quelques numéros de touches.");return}let ch=document.getElementById("editChords").value.split("|").map(x=>x.trim()).filter(Boolean);let s={id:"custom-"+Date.now(),custom:true,title,artist:document.getElementById("editArtist").value.trim(),difficulty:1,key:"Personnalisé",bpm:Number(document.getElementById("editBpm").value)||70,chords:ch.length?ch:["C"],blocks:[{name:"Bloc 1",right:r.length?r:[1],left:l.length?l:[1],fingersRight:r.map(()=>1),fingersLeft:l.map(()=>5)}]};state.customSongs.push(s);state.selectedSong=s.id;saveState();renderEverything();showScreen("practiceScreen")}
-function renderCustom(){let b=document.getElementById("customSongs");b.innerHTML="";if(!state.customSongs.length){b.innerHTML='<p class="muted">Aucun morceau personnel pour l’instant.</p>';return}state.customSongs.forEach(s=>{let d=document.createElement("div");d.className="song";d.innerHTML=`<div class="song-title"><span>${esc(s.title)}</span></div><div class="song-meta">${esc(s.artist||"Personnel")}</div><div class="row" style="margin-top:10px"><button class="big-btn secondary play">Jouer</button><button class="big-btn danger del">Supprimer</button></div>`;d.querySelector(".play").onclick=()=>{state.selectedSong=s.id;state.block=0;state.noteIndex=0;saveState();showScreen("practiceScreen")};d.querySelector(".del").onclick=()=>{state.customSongs=state.customSongs.filter(x=>x.id!==s.id);if(state.selectedSong===s.id)state.selectedSong="now-free";saveState();renderEverything()};b.appendChild(d)})}
-function exportData(){let blob=new Blob([JSON.stringify({version:1,exportedAt:new Date().toISOString(),state},null,2)],{type:"application/json"}),u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download="piano-doux-sauvegarde.json";a.click();URL.revokeObjectURL(u)}
-function importData(f){let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(!d.state)throw 0;state={...defaultState,...d.state};saveState();renderEverything();showScreen("homeScreen")}catch(e){alert("Sauvegarde Piano Doux non reconnue.")}};r.readAsText(f)}
-async function requestWakeLock(){try{if("wakeLock"in navigator)wakeLock=await navigator.wakeLock.request("screen")}catch(e){}}
-document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&practiceRunning)requestWakeLock()});
-function setMsg(t){document.getElementById("encouragement").textContent=t}
-function applyTheme(){document.body.classList.toggle("dark",!!state.dark);document.getElementById("darkBtn").textContent=state.dark?"☀️":"🌙"}
-document.getElementById("continueBtn").onclick=()=>showScreen("practiceScreen");document.getElementById("darkBtn").onclick=()=>{state.dark=!state.dark;saveState();applyTheme()};document.getElementById("pauseBtn").onclick=pausePractice;document.getElementById("startPracticeBtn").onclick=()=>practiceRunning?pausePractice():startPractice();document.getElementById("restartBlockBtn").onclick=resetBlock;
-document.getElementById("waitModeBtn").onclick=()=>{state.waitMode=!state.waitMode;saveState();renderPractice();if(practiceRunning&&!state.waitMode)autoAdvance()};document.getElementById("loopBtn").onclick=()=>{state.loop=!state.loop;saveState();renderPractice()};document.getElementById("listenBtn").onclick=listenBlock;
-document.getElementById("speedSlider").oninput=e=>{state.speed=Number(e.target.value);document.getElementById("speedLabel").textContent=state.speed;saveState()};document.getElementById("blockSelect").onchange=e=>{state.block=Number(e.target.value);resetBlock();renderPractice()};
-document.getElementById("labelMode").onchange=e=>{state.labelMode=e.target.value;saveState();renderKeyboard()};document.getElementById("octaveSelector").onclick=e=>{let b=e.target.closest("[data-oct]");if(!b)return;state.octaves=Number(b.dataset.oct);saveState();document.querySelectorAll("#octaveSelector button").forEach(x=>x.classList.toggle("active",x===b));renderKeyboard()};
-document.getElementById("chordModeBtn").onclick=()=>{state.chordMode=state.chordMode===1?2:1;saveState();document.getElementById("chordModeBtn").textContent=state.chordMode===1?"①":"②";playChord()};document.getElementById("chordDisplay").onclick=playChord;document.getElementById("saveSongBtn").onclick=saveCustom;document.getElementById("exportBtn").onclick=exportData;document.getElementById("importInput").onchange=e=>{if(e.target.files[0])importData(e.target.files[0])};
-function renderEverything(){applyTheme();renderHome();renderSongs();renderCustom();renderPractice();document.getElementById("labelMode").value=state.labelMode;document.querySelectorAll("#octaveSelector button").forEach(b=>b.classList.toggle("active",Number(b.dataset.oct)===state.octaves))}
-
-/* ===== CASCADE ===== */
-let cascade={playMode:"with",accompVolume:.45,section:0,sectionNames:["Intro","Couplet","Refrain","Pont"],stableMidi:null,stableSince:0,selfSoundUntil:0,mode:"wait",running:false,paused:true,index:0,startTime:0,lastTs:0,y:0,speed:60,showNums:true,showNames:true,showFingers:true,loop:false,raf:0,events:[],midi:null,midiActive:false,micActive:false,micStream:null,micAnalyser:null,micData:null,micRAF:0,micTolerance:45,lastPitchAt:0,fullChord:false,appMuted:false};
-
-function activeSongObj(){return BUILTIN_SONGS.find(x=>x.id===state.songId)||state.customSongs?.find(x=>x.id===state.songId)||BUILTIN_SONGS[0]}
-function songSections(){
-  const song=activeSongObj(), blocks=song.blocks||[];
-  return blocks.map((b,i)=>({name:b.name||cascade.sectionNames[i%cascade.sectionNames.length],block:i,measures:4}));
+function preview(now){
+ let upcoming=events.filter(e=>(!st.easy||e.hand==="rh")&&timeForBeat(e.beat)>=now).slice(0,3);
+ $("#preview").innerHTML=upcoming.map(e=>`<span class="peek" style="border-bottom:3px solid var(--${e.hand})">${e.n}</span>`).join("");
 }
-function totalMeasures(){return Math.max(4,songSections().length*4)}
-function currentMeasure(){return Math.min(totalMeasures(),cascade.section*4+Math.floor((cascade.index/Math.max(1,cascade.events.length))*4)+1)}
-function renderSongProgress(){
-  const wrap=document.getElementById("songProgress"); if(!wrap)return; wrap.innerHTML="";
-  songSections().forEach((sec,i)=>{let b=document.createElement("button");b.textContent=sec.name;b.className=i===cascade.section?"active":"";b.onclick=()=>jumpSection(i,true);wrap.appendChild(b)});
-  document.getElementById("measureIndicator").textContent=`mesure ${currentMeasure()} sur ${totalMeasures()}`;
+function currentSec(now){
+ let cur=0;for(let i=0;i<song.sections.length;i++){let es=events.filter(e=>e.sec===i);if(now>=timeForBeat(Math.min(...es.map(x=>x.beat))))cur=i}return cur
 }
-function jumpSection(i,loop=false){
-  const secs=songSections(); if(!secs.length)return;
-  cascade.section=Math.max(0,Math.min(i,secs.length-1)); state.block=secs[cascade.section].block; cascade.loop=loop;
-  cascade.running=false;cancelAnimationFrame(cascade.raf);renderFallNotes();setTimeout(()=>{cascadeAlignCurrent();renderSongProgress();renderNextNotes()},30);updateCascadeUI()
+function updateHUD(now){
+ let p=Math.min(1,now/totalMs());$("#progress").style.width=(p*100)+"%";$("#runner").style.left=`calc(${p*100}% - 10px)`;
+ let sec=currentSec(now);$$(".sec").forEach((b,i)=>b.classList.toggle("active",i===sec));
+ let beat=Math.floor(events.find(e=>timeForBeat(e.beat)>=now)?.beat||totalBeats);$("#measure").textContent=`mesure ${Math.floor(beat/4)+1} / ${Math.ceil(totalBeats/4)}`;
+ $("#score").textContent=`Score ${Math.round(st.score)}`;preview(now);
 }
-function renderNextNotes(){
-  const box=document.getElementById("nextNotes");if(!box)return;box.innerHTML="";
-  cascade.events.slice(cascade.index,cascade.index+3).forEach(x=>{let n=numberName(x.n),d=document.createElement("div");d.className="next-note";d.innerHTML=`${x.hand==="left"?"MG":"MD"} ${x.n}<br><small>${n.fr}</small>`;box.appendChild(d)});
-  renderSongProgress();updateEdgeArrow();
+function audio(){
+ if(!audioCtx){audioCtx=new (window.AudioContext||window.webkitAudioContext)();master=audioCtx.createGain();master.gain.value=+$("#vol").value;master.connect(audioCtx.destination)}
+ audioCtx.resume();return audioCtx
 }
-function updateEdgeArrow(){
-  let l=document.getElementById("edgeLeft"),r=document.getElementById("edgeRight"),x=cascade.events[cascade.index];if(!x||!l||!r)return;
-  let key=document.querySelector(`#cascadeKeyboard [data-midi="${cascadeMidiFor(x)}"]`),shell=document.getElementById("cascadeKeyboardShell");
-  l.style.display=r.style.display="none";if(!key||!shell)return;
-  if(key.offsetLeft<shell.scrollLeft+5)l.style.display="flex";
-  else if(key.offsetLeft+key.offsetWidth>shell.scrollLeft+shell.clientWidth-5)r.style.display="flex";
+function tone(midi,when=0,dur=.16,vol=.08,type="triangle"){
+ let c=audio(),o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.value=440*Math.pow(2,(midi-69)/12);g.gain.setValueAtTime(0,when||c.currentTime);g.gain.linearRampToValueAtTime(vol,(when||c.currentTime)+.01);g.gain.exponentialRampToValueAtTime(.001,(when||c.currentTime)+dur);o.connect(g);g.connect(master);o.start(when||c.currentTime);o.stop((when||c.currentTime)+dur+.03);lastAppTone=performance.now()
 }
-function sectionBravoThenNext(){
-  const flash=document.getElementById("bravoFlash");flash.classList.add("show");
-  setTimeout(()=>{flash.classList.remove("show");const secs=songSections();
-    if(cascade.loop){renderFallNotes();cascadeCountdownStart();return}
-    if(cascade.section<secs.length-1){cascade.section++;state.block=secs[cascade.section].block;renderFallNotes();setTimeout(()=>cascadeCountdownStart(),180)}
-    else{cascade.running=false;updateCascadeUI()}
-  },650)
+function accompaniment(now){
+ if(!running)return;
+ while(nextAudio<events.length && timeForBeat(events[nextAudio].beat)<now+350){
+   let e=events[nextAudio],et=timeForBeat(e.beat),delay=Math.max(0,(et-now)/1000),when=audio().currentTime+delay;
+   // Full recognizable guide: both parts softly; user's hit adds a small brighter tone.
+   tone(e.midi,when,.22,e.hand==="lh"?.055:.035,e.hand==="lh"?"sine":"triangle");
+   if(e.hand==="lh") tone(e.midi+12,when,.12,.018,"sine");
+   nextAudio++;
+ }
 }
-function youtubeOriginal(){
-  const song=activeSongObj();const q=encodeURIComponent(`${song.title||""} ${song.artist||""} original`);
-  window.open(`https://www.youtube.com/results?search_query=${q}`,"_blank","noopener");
+function tick(){
+ if(!running)return;
+ let now=performance.now()-startAt;
+ renderNotes(now);updateHUD(now);accompaniment(now);
+ if(now>=totalMs()){finishSong();return}
+ raf=requestAnimationFrame(tick)
 }
-function scheduleTone(midi,when,dur=.18,vol=.08,type="triangle"){
-  if(cascade.playMode==="solo")return;ensureAudio();let o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.value=440*Math.pow(2,(midi-69)/12);g.gain.setValueAtTime(0,when);g.gain.linearRampToValueAtTime(vol*cascade.accompVolume,when+.012);g.gain.exponentialRampToValueAtTime(.0001,when+dur);o.connect(g);g.connect(audioCtx.destination);o.start(when);o.stop(when+dur+.03);cascade.selfSoundUntil=performance.now()+Math.max(150,dur*1000+80)
+function countdown(cb){
+ let n=3,$c=$("#countdown");$c.classList.remove("hidden");$c.textContent=n;
+ let id=setInterval(()=>{n--;if(n){$c.textContent=n}else{clearInterval(id);$c.textContent="♪";setTimeout(()=>{$c.classList.add("hidden");cb()},350)}},650)
 }
-function playAccompanimentStep(x){
-  if(cascade.playMode==="solo"||cascade.micActive)return; // avoid contaminating microphone
-  ensureAudio();let t=audioCtx.currentTime+.01;
-  if(cascade.playMode==="listen")scheduleTone(cascadeMidiFor(x),t,.22,.11);
-  let song=activeSongObj(),ch=(song.chords||[])[cascade.index%(song.chords||[1]).length];
-  // simple musical bed from the song's own stored bass/left-hand data
-  let b=activeBlock(),ln=b.left?.[cascade.index%Math.max(1,b.left.length)];
-  if(ln!=null&&x.hand==="right")scheduleTone(cascadeMidiFor({n:ln,hand:"left"}),t,.30,.09,"sine");
+function start(from=0){
+ audio();running=false;cancelAnimationFrame(raf);$("#playBtn").disabled=true;maestro("Allez, on joue !","nod");
+ countdown(()=>{running=true;startAt=performance.now()-from;nextAudio=events.findIndex(e=>timeForBeat(e.beat)>=from);if(nextAudio<0)nextAudio=events.length;sessionStart ||= Date.now();$("#playBtn").textContent="⏸ Pause";$("#playBtn").disabled=false;raf=requestAnimationFrame(tick)})
 }
-function autoReactivateInputs(){
-  if(navigator.requestMIDIAccess)connectMidi(true).catch(()=>{});
-  // Browser security may require a prior permission grant; retry silently only if previously enabled.
-  if(localStorage.getItem("pianoMicAllowed")==="1")startMic(true).catch(()=>{});
+function pause(){
+ if(!running){start(pauseAt||0);return}
+ pauseAt=performance.now()-startAt;running=false;cancelAnimationFrame(raf);$("#playBtn").textContent="▶ Continuer";maestro("Pas grave, on continue !","nod");save()
 }
-function cascadeEvents(){
-  const b=activeBlock(), out=[];
-  if(state.level<=2)b.right.forEach((n,i)=>out.push({n,hand:"right",finger:b.fingersRight?.[i]||1,dur:1}));
-  else if(state.level===3)b.left.forEach((n,i)=>out.push({n,hand:"left",finger:b.fingersLeft?.[i]||5,dur:1}));
-  else{
-    let max=Math.max(b.right.length,b.left.length);
-    for(let i=0;i<max;i++){
-      if(b.left[i]!=null)out.push({n:b.left[i],hand:"left",finger:b.fingersLeft?.[i]||5,dur:1});
-      if(b.right[i]!=null)out.push({n:b.right[i],hand:"right",finger:b.fingersRight?.[i]||1,dur:1});
-    }
-  }
-  return out;
+$("#playBtn").onclick=()=>running?pause():start(pauseAt||0);
+function jumpSection(si){let es=events.filter(e=>e.sec===si);pauseAt=timeForBeat(Math.min(...es.map(e=>e.beat)));start(pauseAt)}
+function nearestExpected(midi){
+ let now=running?performance.now()-startAt:pauseAt,windowMs=520;
+ let cand=events.filter(e=>(!st.easy||e.hand==="rh")&&Math.abs(timeForBeat(e.beat)-now)<windowMs);
+ return cand.sort((a,b)=>Math.abs(a.midi-midi)-Math.abs(b.midi-midi))[0]
 }
-function cascadeMidiFor(x){return x.hand==="left"?48+(DIATONIC[(x.n-1)%7].semi)+Math.floor((x.n-1)/7)*12:numMidi(x.n)}
-function cascadeKeyInfo(m){return edenKeyInfo(m)}
-function renderCascadeKeyboard(){
-  const k=document.getElementById("cascadeKeyboard"), shell=document.getElementById("cascadeKeyboardShell");k.innerHTML="";
-  let w=46,start=48,end=84,wi=0;k.style.width=(21*w)+"px";
-  for(let m=start;m<end;m++){
-    let pc=((m%12)+12)%12,black=[1,3,6,8,10].includes(pc),e=document.createElement("button"),info=edenKeyInfo(m);e.dataset.midi=m;
-    if(!black){e.className="white-key "+(info?.hand==="left"?"eden-lh":"eden-rh");e.style.left=wi*w+"px";e.style.width=w+"px";if(info){e.dataset.number=info.n;e.dataset.hand=info.hand;e.dataset.code=info.code}e.innerHTML=keyLabel(info,m);wi++}
-    else{e.className="black-key";e.style.left=(wi*w-w*.30)+"px";e.style.width=w*.60+"px";e.innerHTML=`<div class="key-label"><span class="note">${LETTERS[pc]}</span></div>`}
-    e.onpointerdown=()=>{if(!cascade.appMuted)playMidi(m,.35);cascadeInputMidi(m,"screen")};k.appendChild(e)
-  }
-  shell.scrollLeft=Math.max(0,7*w-shell.clientWidth*.35)
+function userNote(midi){
+ if(!running)return;
+ played.push({midi,t:performance.now()-startAt});let e=nearestExpected(midi);
+ let ok=e && (midi===e.midi || (mic && midi%12===e.midi%12));
+ if(ok){
+   hits.push(e.i);combo++;tone(midi,0,.10,.12,"sine");sparkFor(e);glow(midi);eHit(e);if(combo%10===0)maestro("Ma perruque décolle !","dance");else if(combo%5===0)maestro(jokes[Math.floor(Math.random()*10)],"dance");else maestro(jokes[Math.floor(Math.random()*10)],"nod");
+ }else{combo=0;if(Math.random()<.3)maestro("Pas grave, on continue !","nod")}
+ $("#combo").textContent="x"+combo;
 }
-function cascadeXForEvent(x){
-  let midi=cascadeMidiFor(x), el=document.querySelector(`#cascadeKeyboard [data-midi="${midi}"]`);
-  return el?el.offsetLeft+el.offsetWidth/2:0;
+function eHit(e){let el=document.querySelector(`.note[data-i="${e.i}"]`);if(el)el.classList.add("hit")}
+function glow(m){let k=document.querySelector(`[data-midi="${m}"].white`);if(k){k.classList.add("glow");setTimeout(()=>k.classList.remove("glow"),450)}}
+function sparkFor(e){
+ let el=document.querySelector(`.note[data-i="${e.i}"]`);if(!el||st.reduce)return;let r=el.getBoundingClientRect(),sr=$("#stage").getBoundingClientRect();
+ for(let i=0;i<7;i++){let s=document.createElement("i");s.className="spark";s.style.left=(r.left-sr.left+r.width/2)+"px";s.style.top=(r.top-sr.top+r.height/2)+"px";s.style.setProperty("--x",(Math.random()*70-35)+"px");s.style.setProperty("--y",(Math.random()*70-35)+"px");$("#stage").appendChild(s);setTimeout(()=>s.remove(),520)}
 }
-function renderFallNotes(){
-  cascade.events=cascadeEvents();const a=document.getElementById("fallArea"),shell=document.getElementById("cascadeKeyboardShell");
-  a.innerHTML="";a.style.width=document.getElementById("cascadeKeyboard").style.width;
-  const stage=document.getElementById("cascadeStage"),H=Math.max(250,stage.clientHeight),spacing=Math.max(86,H*.25),base=H-30;
-  cascade.events.forEach((x,i)=>{let d=document.createElement("div");d.className="fall-note "+x.hand;d.dataset.i=i;let h=64*x.dur;d.style.height=h+"px";d.style.width="42px";d.style.left=(cascadeXForEvent(x)-21)+"px";d.style.top=(base-(i+1)*spacing-h)+"px";let nm=numberName(x.n);d.innerHTML=`${cascade.showNums?`<span class="cn">${x.n}</span>`:""}${cascade.showNames?`<span class="nn">${nm.fr} · ${nm.en}</span>`:""}${cascade.showFingers?`<span class="fn">doigt ${x.finger}</span>`:""}`;a.appendChild(d)});
-  cascade.y=0;a.style.transform="translateY(0px)";cascade.index=0;cascadeHighlightExpected();renderNextNotes();
+function maestro(text,anim){
+ if(st.talk)$("#bubble").textContent=text;let f=$("#face");f.textContent=costumes[Math.min(st.unlocked-1,costumes.length-1)];f.className="face "+anim;setTimeout(()=>f.className="face",520)
 }
-function cascadeHighlightExpected(){
-  document.querySelectorAll("#cascadeKeyboard .white-key,#cascadeKeyboard .black-key").forEach(k=>k.classList.remove("right-lit","left-lit","correct"));
-  document.querySelectorAll(".fall-note").forEach(n=>n.classList.remove("expected"));let expectedNote=document.querySelector(`.fall-note[data-i="${cascade.index}"]`);expectedNote?.classList.add("expected");let x=cascade.events[cascade.index];if(!x)return;let m=cascadeMidiFor(x),k=document.querySelector(`#cascadeKeyboard [data-midi="${m}"]`);
-  if(k){k.classList.add(x.hand==="right"?"right-lit":"left-lit");updateEdgeArrow();let shell=document.getElementById("cascadeKeyboardShell"),target=k.offsetLeft-shell.clientWidth/2+k.offsetWidth/2;shell.scrollTo({left:Math.max(0,target),behavior:"smooth"})}
+function sectionResult(si){
+ let es=events.filter(e=>e.sec===si&&(!st.easy||e.hand==="rh")),h=es.filter(e=>hits.includes(e.i)).length,p=Math.round(100*h/es.length);secStats[si]=p;
+ $("#msg").textContent=`${song.sections[si].name} : ${p} % réussi`;$("#msg").classList.add("show");setTimeout(()=>$("#msg").classList.remove("show"),1800);
+ st.sectionSpeed=st.sectionSpeed||{};let old=st.sectionSpeed[si]||1;if(p<65)st.sectionSpeed[si]=Math.max(.6,old-.1);else if(p>82)st.sectionSpeed[si]=Math.min(1,old+.1);save()
 }
-function cascadeTargetY(){
-  let el=document.querySelector(`.fall-note[data-i="${cascade.index}"]`),stage=document.getElementById("cascadeStage");
-  if(!el)return cascade.y;
-  return (stage.clientHeight-6)-(el.offsetTop+el.offsetHeight);
+function finishSong(){
+ running=false;cancelAnimationFrame(raf);for(let i=0;i<song.sections.length;i++)sectionResult(i);
+ let total=events.filter(e=>!st.easy||e.hand==="rh").length,unique=new Set(hits).size,pct=Math.round(100*unique/total);st.score=Math.max(st.score,Math.round((st.score+pct)/2));st.unlocked=Math.min(costumes.length,st.unlocked+1);save();
+ $("#stars").textContent=pct>80?"⭐⭐⭐":pct>50?"⭐⭐":"⭐";$("#finishText").textContent=`${pct} % · Score ${Math.round(st.score)}`;$("#finish").classList.remove("hidden");confetti();maestro("Mozart serait jaloux (un tout petit peu) !","dance")
 }
-function cascadeAlignCurrent(){
-  cascade.y=cascadeTargetY();
-  document.getElementById("fallArea").style.transform=`translateY(${cascade.y}px)`;
+function confetti(){if(st.reduce)return;let c=$("#confetti");for(let i=0;i<35;i++){let x=document.createElement("i");x.className="conf";x.textContent=["●","◆","★"][i%3];x.style.left=Math.random()*100+"%";x.style.animationDelay=Math.random()*.35+"s";c.appendChild(x)}setTimeout(()=>c.innerHTML="",2100)}
+$("#replay").onclick=()=>{$("#finish").classList.add("hidden");hits=[];played=[];combo=0;pauseAt=0;start(0)}
+$("#easyBtn").onclick=()=>{st.easy=!st.easy;document.body.classList.toggle("easy",st.easy);$("#easyBtn").textContent=st.easy?"Version complète":"Version facile";renderKeyboard();save()}
+$("#replayPass").onclick=()=>{let worst=Object.entries(secStats).sort((a,b)=>a[1]-b[1])[0];if(worst)jumpSection(+worst[0])}
+function showActions(){ $("#actions").classList.remove("hidden") }
+setInterval(showActions,15000);
+function sessionTick(){if(!sessionStart)return;let elapsed=Math.floor((Date.now()-sessionStart)/1000);let left=Math.max(0,sessionLeft-elapsed);$("#timer").textContent=`${Math.floor(left/60)}:${String(left%60).padStart(2,"0")}`;if(left===0){sessionStart=0;$("#sessionText").textContent="Bravo, tu as joué 5 minutes";$("#sessionEnd").classList.remove("hidden")}}
+setInterval(sessionTick,1000);
+$("#more5").onclick=()=>{$("#sessionEnd").classList.add("hidden");sessionLeft=300;sessionStart=Date.now()}
+$("#tomorrow").onclick=()=>{$("#sessionEnd").classList.add("hidden");pause();save()}
+$("#gear").onclick=()=>$("#settings").classList.remove("hidden");$("#closeSettings").onclick=()=>$("#settings").classList.add("hidden");
+$$("[data-theme]").forEach(b=>b.onclick=()=>{st.theme=b.dataset.theme;document.body.dataset.theme=st.theme;save()});
+$("#talk").onchange=e=>{st.talk=e.target.checked;document.body.classList.toggle("quiet",!st.talk);save()}
+$("#reduce").onchange=e=>{st.reduce=e.target.checked;document.body.classList.toggle("reduced",st.reduce);save()}
+$("#vol").oninput=e=>{if(master)master.gain.value=+e.target.value}
+$("#original").onclick=()=>window.open("https://www.youtube.com/results?search_query="+encodeURIComponent(song.title+" "+song.artist),"_blank");
+$("#costumeBtn").onclick=()=>{$("#costumes").classList.remove("hidden");renderCostumes()};$("#closeCostumes").onclick=()=>$("#costumes").classList.add("hidden");
+function renderCostumes(){$("#costumeGrid").innerHTML=costumes.map((c,i)=>`<div class="cost ${i>=st.unlocked?'locked':''}"><div style="font-size:34px">${i<st.unlocked?c:"🔒"}</div>${["Classique","Haut-de-forme","Magicien","Star","Rockeur","Maestro"][i]}</div>`).join("")}
+async function connectMidi(){
+ if(!navigator.requestMIDIAccess){$("#inputState").textContent="MIDI indisponible · micro automatique";return false}
+ try{midi=await navigator.requestMIDIAccess();let ins=[...midi.inputs.values()];if(!ins.length){$("#inputState").textContent="Vérifie le câble USB et que le clavier est allumé, puis touche ici pour réessayer";return false}
+ ins.forEach(x=>x.onmidimessage=e=>{let [s,n,v]=e.data;if((s&0xf0)===0x90&&v>0)userNote(n)});$("#inputState").textContent="MIDI connecté";return true
+ }catch(e){$("#inputState").textContent="MIDI non connecté · micro automatique";return false}
 }
-function cascadeWaitFall(){
-  cancelAnimationFrame(cascade.raf);
-  if(!cascade.running||cascade.mode!=="wait")return;
-  const target=cascadeTargetY();
-  const step=(ts)=>{
-    if(!cascade.running||cascade.mode!=="wait")return;
-    let delta=target-cascade.y;
-    if(Math.abs(delta)<=2){
-      cascade.y=target;
-      document.getElementById("fallArea").style.transform=`translateY(${cascade.y}px)`;
-      cascadeHighlightExpected();
-      return; // stop exactly on strike line and wait for the real key
-    }
-    cascade.y+=Math.sign(delta)*Math.min(Math.abs(delta),7);
-    document.getElementById("fallArea").style.transform=`translateY(${cascade.y}px)`;
-    cascade.raf=requestAnimationFrame(step);
-  };
-  cascade.raf=requestAnimationFrame(step);
-}
-function openCascade(){savePracticeTime();pausePractice();cascade.section=Math.max(0,state.block||0);document.getElementById("cascadeOverlay").classList.add("active");cascade.speed=state.speed||60;document.getElementById("cascadeSpeed").value=cascade.speed;document.getElementById("cascadeSpeedLabel").textContent=cascade.speed;renderCascadeKeyboard();setTimeout(()=>{renderFallNotes();cascadeAlignCurrent()},50);requestWakeLock();renderSongProgress();renderNextNotes();autoReactivateInputs();updateCascadeUI()}
-function closeCascade(){cascade.running=false;cancelAnimationFrame(cascade.raf);document.getElementById("cascadeOverlay").classList.remove("active");stopMic(false)}
-function updateCascadeUI(){document.getElementById("cascadePauseBtn").textContent=cascade.running?"⏸ Pause":"▶ Jouer";document.getElementById("cascadeTempoBox").style.display=cascade.mode==="tempo"?"block":"none";document.querySelectorAll("#cascadeModeSeg button").forEach(b=>b.classList.toggle("active",b.dataset.cmode===cascade.mode));document.getElementById("cascadeLoopBtn").textContent=`🔁 Boucle 4 mesures : ${cascade.loop?"oui":"non"}`;document.getElementById("showNumsBtn").classList.toggle("on",cascade.showNums);document.getElementById("showNamesBtn").classList.toggle("on",cascade.showNames);document.getElementById("showFingersBtn").classList.toggle("on",cascade.showFingers)}
-async function cascadeCountdownStart(){if(cascade.running)return;if(cascade.playMode==="listen")cascade.mode="tempo";requestWakeLock();let c=document.getElementById("cascadeCountdown");c.classList.add("show");for(let n=3;n>=1;n--){c.textContent=n;await new Promise(r=>setTimeout(r,600))}c.textContent="♪";await new Promise(r=>setTimeout(r,300));c.classList.remove("show");cascade.running=true;cascade.paused=false;cascade.lastTs=performance.now();updateCascadeUI();if(cascade.mode==="tempo"){cascade.raf=requestAnimationFrame(cascadeTick)}else{cascadeWaitFall()}}
-function cascadePause(){if(!cascade.running){cascadeCountdownStart();return}cascade.running=false;cascade.paused=true;cancelAnimationFrame(cascade.raf);updateCascadeUI()}
-function cascadeTick(ts){if(!cascade.running||cascade.mode!=="tempo")return;let dt=Math.min(40,ts-cascade.lastTs);cascade.lastTs=ts;let pxps=90*(cascade.speed/100);cascade.y+=pxps*dt/1000;document.getElementById("fallArea").style.transform=`translateY(${cascade.y}px)`;let el=document.querySelector(`.fall-note[data-i="${cascade.index}"]`),stage=document.getElementById("cascadeStage");if(el&&el.offsetTop+el.offsetHeight+cascade.y>=stage.clientHeight-6)cascadeTempoAdvance();cascade.raf=requestAnimationFrame(cascadeTick)}
-function cascadeTempoAdvance(){let x=cascade.events[cascade.index];if(!x)return;let k=document.querySelector(`#cascadeKeyboard [data-midi="${cascadeMidiFor(x)}"]`);if(k){k.classList.add(x.hand==="right"?"right-lit":"left-lit");setTimeout(()=>k.classList.remove("right-lit","left-lit"),140)}playAccompanimentStep(x);cascade.index++;renderNextNotes();if(cascade.index>=cascade.events.length){cascadeFinish();return}cascadeHighlightExpected()}
-function cascadeInputMidi(m,source="midi"){
-  let info=cascadeKeyInfo(m),name=LETTERS[((m%12)+12)%12];document.getElementById("heardDisplay").textContent=`J’ai entendu : ${name}${info?` · ${info.hand==="left"?"MG":"MD"} ${info.n}`:""}`;
-  if(!cascade.running||cascade.mode!=="wait")return;
-  let x=cascade.events[cascade.index];if(!x)return;let expected=cascadeMidiFor(x);
-  if(m===expected || (source==="mic" && ((m%12)+12)%12===((expected%12)+12)%12)){let note=document.querySelector(`.fall-note[data-i="${cascade.index}"]`),key=document.querySelector(`#cascadeKeyboard [data-midi="${m}"]`);note?.classList.add("hit");key?.classList.add("correct");if(source!=="mic"&&!cascade.appMuted)playMidi(m,.10,.035);playAccompanimentStep(x);setTimeout(()=>key?.classList.remove("correct"),170);cascade.index++;renderNextNotes();if(cascade.index>=cascade.events.length){cascadeFinish();return}cascadeHighlightExpected();cascadeWaitFall()}
-  else{let note=document.querySelector(`.fall-note[data-i="${cascade.index}"]`);note?.classList.remove("wrong");void note?.offsetWidth;note?.classList.add("wrong")}
-}
-function cascadeFinish(){cascade.running=false;updateCascadeUI();sectionBravoThenNext()}
-async function connectMidi(silent=false){
-  const st=document.getElementById("midiStatus"),top=document.getElementById("inputStatus");
-  if(!navigator.requestMIDIAccess){st.textContent="MIDI Web non disponible dans ce navigateur.";return}
-  try{
-    cascade.midi=await navigator.requestMIDIAccess({sysex:false});let inputs=[...cascade.midi.inputs.values()];
-    inputs.forEach(inp=>inp.onmidimessage=e=>{let [cmd,note,vel]=e.data;if((cmd&0xf0)===0x90&&vel>0)cascadeInputMidi(note,"midi")});
-    cascade.midiActive=inputs.length>0;cascade.appMuted=cascade.midiActive||cascade.micActive;
-    st.textContent=inputs.length?`MIDI connecté : ${inputs.map(i=>i.name||"clavier").join(", ")}`:"MIDI autorisé, mais aucun clavier détecté.";
-    document.getElementById("midiRetry").style.display=inputs.length?"none":"block";
-    top.textContent=inputs.length?"MIDI connecté":"MIDI : aucun clavier";top.className="cascade-status "+(inputs.length?"status-ok":"status-off");
-    cascade.midi.onstatechange=()=>connectMidi(true);
-  }catch(e){st.textContent="Connexion MIDI refusée ou indisponible."}
-}
+$("#retry").onclick=connectMidi;
 function autoCorrelate(buf,sr){
-  let SIZE=buf.length,rms=0;for(let i=0;i<SIZE;i++)rms+=buf[i]*buf[i];rms=Math.sqrt(rms/SIZE);if(rms<.015)return -1;
-  let best=-1,bestOff=-1,min=Math.floor(sr/1100),max=Math.min(Math.floor(sr/65),SIZE/2);
-  for(let off=min;off<max;off++){let corr=0;for(let i=0;i<SIZE-off;i++)corr+=buf[i]*buf[i+off];if(corr>best){best=corr;bestOff=off}}
-  return bestOff>0?sr/bestOff:-1
+ let SIZE=buf.length,rms=0;for(let i=0;i<SIZE;i++)rms+=buf[i]*buf[i];rms=Math.sqrt(rms/SIZE);if(rms<.025)return -1;
+ let r1=0,r2=SIZE-1,th=.2;for(let i=0;i<SIZE/2;i++)if(Math.abs(buf[i])<th){r1=i;break}for(let i=1;i<SIZE/2;i++)if(Math.abs(buf[SIZE-i])<th){r2=SIZE-i;break}
+ buf=buf.slice(r1,r2);SIZE=buf.length;let c=new Array(SIZE).fill(0);for(let i=0;i<SIZE;i++)for(let j=0;j<SIZE-i;j++)c[i]+=buf[j]*buf[j+i];
+ let d=0;while(c[d]>c[d+1])d++;let max=-1,pos=-1;for(let i=d;i<SIZE;i++)if(c[i]>max){max=c[i];pos=i}return sr/pos
 }
-function freqToMidi(f){return Math.round(69+12*Math.log2(f/440))}
-function centsOff(f,m){return 1200*Math.log2(f/(440*Math.pow(2,(m-69)/12)))}
 async function startMic(){
-  try{
-    stopMic(false);let stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
-    ensureAudio();let src=audioCtx.createMediaStreamSource(stream),an=audioCtx.createAnalyser();an.fftSize=2048;src.connect(an);cascade.micStream=stream;cascade.micAnalyser=an;cascade.micData=new Float32Array(an.fftSize);cascade.micActive=true;cascade.appMuted=true;localStorage.setItem("pianoMicAllowed","1");document.getElementById("headphoneTip").style.display=(cascade.playMode!=="solo")?"block":"none";document.getElementById("inputStatus").textContent="Micro actif";document.getElementById("inputStatus").className="cascade-status status-ok";micLoop()
-  }catch(e){document.getElementById("inputStatus").textContent="Micro non autorisé";document.getElementById("inputStatus").className="cascade-status status-off"}
+ try{let stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:false}}),c=audio(),src=c.createMediaStreamSource(stream),an=c.createAnalyser();an.fftSize=2048;src.connect(an);mic={an,buf:new Float32Array(an.fftSize)};
+ const loop=()=>{an.getFloatTimeDomainData(mic.buf);let f=autoCorrelate(mic.buf,c.sampleRate);if(f>0&&performance.now()-lastAppTone>180){let m=Math.round(69+12*Math.log2(f/440)),pc=m%12;if(pc===lastPitch){if(performance.now()-pitchSince>=80){userNote(m);pitchSince=performance.now()+260}}else{lastPitch=pc;pitchSince=performance.now()}}micRAF=requestAnimationFrame(loop)};loop();$("#inputState").textContent+=" · micro actif"
+ }catch(e){$("#inputState").textContent+=" · micro non autorisé"}
 }
-function micLoop(){
-  if(!cascade.micActive)return;
-  cascade.micAnalyser.getFloatTimeDomainData(cascade.micData);
-  let f=autoCorrelate(cascade.micData,audioCtx.sampleRate);
-  if(f>0 && performance.now()>cascade.selfSoundUntil){
-    let m=freqToMidi(f),c=Math.abs(centsOff(f,m)),now=performance.now(),pc=((m%12)+12)%12;
-    if(c<=cascade.micTolerance){
-      if(cascade.stableMidi===pc){
-        if(now-cascade.stableSince>=80 && now-cascade.lastPitchAt>170){
-          cascade.lastPitchAt=now;
-          let expected=cascade.events[cascade.index],em=expected?cascadeMidiFor(expected):m;
-          // microphone deliberately ignores octave: remap detected pitch class to expected octave
-          let mapped=em + ((((pc-(em%12))+18)%12)-6);
-          cascadeInputMidi(mapped,"mic",true);
-        }
-      }else{cascade.stableMidi=pc;cascade.stableSince=now}
-    }else{cascade.stableMidi=null}
-  }
-  cascade.micRAF=requestAnimationFrame(micLoop)
-}
-function stopMic(reset=true){cascade.micActive=false;cancelAnimationFrame(cascade.micRAF);if(cascade.micStream)cascade.micStream.getTracks().forEach(t=>t.stop());cascade.micStream=null;if(reset){cascade.appMuted=cascade.midiActive;document.getElementById("inputStatus").textContent=cascade.midiActive?"MIDI connecté":"Entrée : écran"}}
-document.getElementById("cascadeLaunchBtn").onclick=()=>{openCascade();setTimeout(cascadeCountdownStart,180)};
-const qp=document.getElementById("quickPlayBtn");if(qp)qp.onclick=()=>{openCascade();setTimeout(cascadeCountdownStart,180)};document.getElementById("cascadeExitBtn").onclick=closeCascade;document.getElementById("cascadePauseBtn").onclick=cascadePause;
-document.getElementById("cascadeSettingsBtn").onclick=()=>document.getElementById("cascadeSettings").classList.add("show");document.getElementById("cascadeSettingsClose").onclick=()=>{document.getElementById("cascadeSettings").classList.remove("show");renderCascadeKeyboard();setTimeout(()=>{renderFallNotes();cascadeAlignCurrent()},30)};
-
-document.getElementById("playModeSelect").onclick=e=>{let b=e.target.closest("[data-pmode]");if(!b)return;cascade.playMode=b.dataset.pmode;document.querySelectorAll("#playModeSelect button").forEach(x=>x.classList.toggle("active",x===b));document.getElementById("headphoneTip").style.display=(cascade.micActive&&cascade.playMode!=="solo")?"block":"none";if(cascade.playMode==="listen"){cascade.mode="tempo";updateCascadeUI()}};
-document.getElementById("accompVolume").oninput=e=>{cascade.accompVolume=Number(e.target.value)/100;document.getElementById("accompVolumeLabel").textContent=e.target.value};
-document.getElementById("originalBtn").onclick=youtubeOriginal;
-document.getElementById("midiRetry").onclick=()=>connectMidi();
-document.getElementById("cascadeModeSeg").onclick=e=>{let b=e.target.closest("[data-cmode]");if(!b)return;cascade.mode=b.dataset.cmode;cascade.running=false;cancelAnimationFrame(cascade.raf);renderFallNotes();setTimeout(cascadeAlignCurrent,20);updateCascadeUI()};
-document.getElementById("cascadeSpeed").oninput=e=>{cascade.speed=Number(e.target.value);document.getElementById("cascadeSpeedLabel").textContent=cascade.speed};
-document.getElementById("cascadeLoopBtn").onclick=()=>{cascade.loop=!cascade.loop;updateCascadeUI()};
-document.getElementById("showNumsBtn").onclick=()=>{cascade.showNums=!cascade.showNums;renderFallNotes();setTimeout(cascadeAlignCurrent,20);updateCascadeUI()};
-document.getElementById("showNamesBtn").onclick=()=>{cascade.showNames=!cascade.showNames;renderFallNotes();setTimeout(cascadeAlignCurrent,20);updateCascadeUI()};
-document.getElementById("showFingersBtn").onclick=()=>{cascade.showFingers=!cascade.showFingers;renderFallNotes();setTimeout(cascadeAlignCurrent,20);updateCascadeUI()};
-document.getElementById("midiConnectBtn").onclick=connectMidi;document.getElementById("micConnectBtn").onclick=()=>cascade.micActive?stopMic():startMic();
-document.getElementById("micTolerance").oninput=e=>{cascade.micTolerance=Number(e.target.value);document.getElementById("micToleranceLabel").textContent=cascade.micTolerance};
-document.getElementById("fullChordMidi").onchange=e=>cascade.fullChord=e.target.checked;
-
-renderEverything();window.addEventListener("beforeunload",savePracticeTime);
+async function initInput(){let ok=await connectMidi();if(!ok)startMic()}
+document.body.dataset.theme=st.theme;document.body.classList.toggle("easy",st.easy);document.body.classList.toggle("quiet",!st.talk);document.body.classList.toggle("reduced",st.reduce);$("#talk").checked=st.talk;$("#reduce").checked=st.reduce;$("#easyBtn").textContent=st.easy?"Version complète":"Version facile";
+renderKeyboard();renderNotes(0);updateHUD(0);
+addEventListener("resize",()=>{renderKeyboard();renderNotes(running?performance.now()-startAt:pauseAt)});
+document.addEventListener("visibilitychange",()=>{if(document.hidden&&running){pauseAt=performance.now()-startAt;running=false;cancelAnimationFrame(raf);save()}});
+addEventListener("beforeunload",()=>{st.resume=pauseAt||(running?performance.now()-startAt:0);save()});
+if(st.resume){pauseAt=st.resume;updateHUD(pauseAt);renderNotes(pauseAt)}
+// Permissions are re-attempted after first user gesture, required by mobile browsers.
+let once=()=>{initInput();document.removeEventListener("pointerdown",once)};document.addEventListener("pointerdown",once,{once:true});
 </script>
 </body>
 </html>
